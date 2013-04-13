@@ -7,7 +7,7 @@
  * @link        http://www.rogerethomas.com
  * @license     http://www.rogerethomas.com/license
  * @version     1.0.0
- * @package     Skinnys
+ * @package     Skinny
  *
  * MIT LICENSE
  *
@@ -31,6 +31,8 @@
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 namespace Skinny;
+
+use \Skinny\Storage;
 
 /**
  * Session
