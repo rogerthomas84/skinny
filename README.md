@@ -16,3 +16,9 @@ The primary goal of this class is to provide a simplistic interface to interact 
 
 ### `/Skinny/Storage` ###
 Provides a Session Namespace approach to storing data for a users session.
+
+
+### `/Skinny/Auth` ###
+This class extends the basic functionality of the `\Skinny\Storage` to provide a basic method of
+storing and retrieving a users authentication status. Calling `login()` and `logout()` provides
+the core of the class
