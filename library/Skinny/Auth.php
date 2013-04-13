@@ -159,5 +159,4 @@ class Auth {
         $this->instance = new \Skinny\Storage('__Sf_Auth');
        	$this->instance->lock();
     }
-
 }

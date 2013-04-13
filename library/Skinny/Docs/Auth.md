@@ -27,6 +27,7 @@ if($params['user'] == 'joe' && $params['password'] == 'bloggs') {
     // User is now logged in.
 
 }
+
 ```
 
 ### Validating a users authentication status ###
@@ -47,4 +48,5 @@ if ($auth->isLoggedIn()) {
 } else {
     // User is not logged in.
 }
+
 ```

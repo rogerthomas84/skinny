@@ -20,4 +20,5 @@ $session->removeAll();
 
 // Destroying the session entirely (Optionally regenerate the session_id)
 $session->destroy($regenerate = false);
+
 ```

@@ -183,5 +183,4 @@ class Session {
     {
         $this->instance = new \Skinny\Storage('__Sf_');
     }
-
 }
