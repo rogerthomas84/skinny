@@ -4,7 +4,7 @@
 
 ```php
 // Retrieving an instance
-$session = /Skinny/Session::getInstance();
+$session = \Skinny\Session::getInstance();
 
 // Setting a value in the session
 $session->set("name", "Joe Bloggs");
