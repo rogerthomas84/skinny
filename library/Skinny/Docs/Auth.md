@@ -23,6 +23,13 @@ if($params['user'] == 'joe' && $params['password'] == 'bloggs') {
             // You could store more information here.
         )
     );
+    // Set the user roles in object (optional)
+    $auth->setRoles(
+        array(
+            'user',
+            'administrator',
+        )
+    );
     
     // User is now logged in.
 
