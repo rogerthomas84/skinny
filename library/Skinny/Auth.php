@@ -84,6 +84,26 @@ class Auth {
     }
 
     /**
+     * Set roles for a user
+     *
+     * @param array $roles - the users roles
+     * @return boolean
+     */
+    public function setRoles($roles = array())
+    {
+        if ($this->instance instanceof \Skinny\Storage) {
+            if ($this->instance->isLocked()) {
+                $this->instance->unlock();
+            }
+            $this->instance->set('roles', $roles);
+            $this->instance->lock();
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
      * Destroy an authentication session.
      *
      * @param mixed $identity - the users account details.
@@ -91,16 +111,17 @@ class Auth {
      */
     public function login($identity)
     {
-    	if ($this->instance instanceof \Skinny\Storage) {
-    		if ($this->instance->isLocked()) {
-    			$this->instance->unlock();
-    		}
-			$this->instance->set('identity', $identity);
-			$this->instance->lock();
-			return true;
-    	}
+        if ($this->instance instanceof \Skinny\Storage) {
+            if ($this->instance->isLocked()) {
+                $this->instance->unlock();
+            }
+            $this->instance->set('identity', $identity);
+            $this->instance->set('roles', array());
+            $this->instance->lock();
+            return true;
+        }
 
-    	return false;
+        return false;
     }
 
     /**
@@ -111,11 +132,25 @@ class Auth {
      */
     public function getIdentity()
     {
-    	if ($this->isLoggedIn()) {
-    		return $this->instance->get('identity');
-    	}
+        if ($this->isLoggedIn()) {
+            return $this->instance->get('identity');
+        }
 
-    	return false;
+        return false;
+    }
+
+    /**
+     * Retrieve the users roles as set by setRoles()
+     *
+     * @return array|boolean false for failure
+     */
+    public function getRoles()
+    {
+        if ($this->isLoggedIn()) {
+            return $this->instance->get('roles');
+        }
+
+        return false;
     }
 
     /**
@@ -125,13 +160,13 @@ class Auth {
      */
     public function isLoggedIn()
     {
-    	if ($this->instance instanceof \Skinny\Storage) {
-			if ($this->instance->get('identity') != false) {
-				return true;
-			}
-    	}
+        if ($this->instance instanceof \Skinny\Storage) {
+            if ($this->instance->get('identity') != false) {
+                return true;
+            }
+        }
 
-    	return false;
+        return false;
     }
 
     /**
@@ -141,14 +176,14 @@ class Auth {
      */
     public function logout()
     {
-    	if ($this->instance instanceof \Skinny\Storage) {
-    		if ($this->instance->isLocked()) {
-    			$this->instance->unlock();
-    		}
-			$this->instance->destroy();
-    	}
+        if ($this->instance instanceof \Skinny\Storage) {
+            if ($this->instance->isLocked()) {
+                $this->instance->unlock();
+            }
+            $this->instance->destroy();
+        }
 
-    	return false;
+        return false;
     }
 
     /**
@@ -157,6 +192,6 @@ class Auth {
     protected function setup()
     {
         $this->instance = new \Skinny\Storage('__Sf_Auth');
-       	$this->instance->lock();
+        $this->instance->lock();
     }
 }
