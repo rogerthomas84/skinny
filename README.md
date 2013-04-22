@@ -41,3 +41,7 @@ Validates a given value isn't empty
 ### `/Skinny/Validate/EmailAddress` ###
 Validates an email address is a valid format
 * [Read More](/library/Skinny/Docs/Validate_EmailAddress.md)
+
+
+
+April 2013
