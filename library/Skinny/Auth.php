@@ -104,6 +104,86 @@ class Auth {
     }
 
     /**
+     * Add a single role to a user
+     *
+     * @param string $role - a role identifier
+     * @return boolean
+     */
+    public function addRole($role)
+    {
+        if ($this->instance instanceof \Skinny\Storage) {
+            if ($this->hasRole($role)) {
+                return true;
+            }
+            if ($this->instance->isLocked()) {
+                $this->instance->unlock();
+            }
+            $roles = $this->instance->get('roles');
+            if (is_array($roles)) {
+                $this->instance->set(
+                    'roles', array_merge($roles, array($role)));
+            } else {
+                $this->instance->set('roles', array($role));
+            }
+            $this->instance->lock();
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
+     * Remove a single role from a user
+     *
+     * @param mixed<> $role - a role identifier
+     * @return boolean
+     */
+    public function removeRole($role)
+    {
+        if ($this->instance instanceof \Skinny\Storage) {
+            if (!$this->hasRole($role)) {
+                return false;
+            }
+            if ($this->instance->isLocked()) {
+                $this->instance->unlock();
+            }
+            $roles = $this->instance->get('roles');
+            if (is_array($roles)) {
+                $new = array();
+                foreach ($roles as $old) {
+                    if ($old != $role) {
+                        $new[] = $old;
+                    }
+                }
+                $this->instance->set('roles', $new);
+            }
+
+            $this->instance->lock();
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
+     * Check if a user has a given role
+     *
+     * @param mixed<> $role
+     * @return boolean
+     */
+    public function hasRole($role)
+    {
+        if ($this->instance instanceof \Skinny\Storage) {
+            $roles = $this->instance->get('roles');
+            if (is_array($roles) && in_array($role, $roles)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    /**
      * Destroy an authentication session.
      *
      * @param mixed $identity - the users account details.
