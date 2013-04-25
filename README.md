@@ -21,6 +21,10 @@ the core of the class
 This class provides a simple way of performing form validation at the controller level
 * [Read More](/library/Skinny/Docs/Form.md)
 
+### `/Skinny/Form/Upload` ###
+This class provides a simple method to upload files to a given folder on upload from a form.
+* [Read More](/library/Skinny/Docs/Form_Upload.md)
+
 ## Session Management ##
 
 ### `/Skinny/Session` ###
