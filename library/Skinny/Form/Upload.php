@@ -43,8 +43,11 @@ namespace Skinny\Form;
  * $class = new \Skinny\Form\Upload();
  * $class->setFormFieldName('upload_file');
  * $class->setTargetFolder("/tmp");
- * $class->setForceUploadRename(true);
- * $class->setRenameMethod($class::RENAME_PREPEND_TIMESTAMP);
+ * $class->setValidators(
+ *      array(
+ *          new \Skinny\Validate\File\Image()
+ *      )
+ * );
  * if (!$class->receive()) {
  *     print_r($class->getError());
  * } else {
@@ -58,94 +61,64 @@ namespace Skinny\Form;
 class Upload {
 
     /**
-     *
-     * @var string
-     */
-    const RENAME_PREPEND_TIMESTAMP = "RENAME_PREPEND_TIMESTAMP";
-
-    /**
-     *
-     * @var string
-     */
-    const RENAME_PREPEND_RANDOM = "RENAME_PREPEND_RANDOM";
-
-    /**
-     *
      * @var string
      */
     private $formFieldName = null;
 
     /**
-     *
      * @var string
      */
     private $targetLocationFolder = null;
 
     /**
-     *
      * @var string
      */
     private $uploadedTempName = null;
 
     /**
-     *
      * @var string
      */
     private $uploadedName = null;
 
     /**
-     *
      * @var string
      */
     private $uploadedSize = null;
 
     /**
-     *
      * @var string
      */
     private $uploadedType = null;
 
     /**
-     *
+     * @var array
+     */
+    private $validators = null;
+
+    /**
      * @var string
      */
     private $error = null;
 
     /**
-     *
      * @var boolean
      */
     private $success = false;
 
     /**
-     *
      * @var string
      */
     private $finalLocation = null;
 
     /**
-     *
      * @var string
      */
     private $finalName = null;
 
     /**
-     *
-     * @var boolean
-     */
-    private $forceRenameSuccess = false;
-
-    /**
-     *
      * @var string
      */
     private $renameType = null;
-
-    /**
-     *
-     * @var string
-     */
-    private $renameString = null;
 
     /**
      * Initialise the upload class
@@ -175,30 +148,12 @@ class Upload {
     }
 
     /**
-     * If set to true then the file will be renamed to hopefully
-     * force a succesful upload.
+     * Set an array of validators to use for the validation
+     * @param array $array
      */
-    public function setForceUploadRename($boolean)
+    public function setValidators($array)
     {
-        if ($boolean === true) {
-            $this->forceRenameSuccess = true;
-            return;
-        }
-        $this->forceRenameSuccess = false;
-    }
-
-    /**
-     * Set the rename method to either RENAME_PREPEND_RANDOM or RENAME_PREPEND_TIMESTAMP
-     */
-    public function setRenameMethod($method = self::RENAME_PREPEND_RANDOM)
-    {
-        if ($method == self::RENAME_PREPEND_RANDOM) {
-            $this->renameType = self::RENAME_PREPEND_RANDOM;
-            $this->renameString = rand(1,9) . rand(1,9) . rand(1,9) . rand(1,9) . rand(1,9) . "-";
-        } else if ($method == self::RENAME_PREPEND_TIMESTAMP) {
-            $this->renameType = self::RENAME_PREPEND_TIMESTAMP;
-            $this->renameString = time() . "-";
-        }
+        $this->validators = $array;
     }
 
     /**
@@ -229,39 +184,16 @@ class Upload {
                     }
                     switch((int)$file["error"]) {
                     	case(1):
-                    	    //trigger_error("The uploaded file exceeds the upload_max_filesize directive in php.ini.");
-                    	    $this->error = "Uploaded file exceeds the maximum size.";
-                    	    break;
                     	case(2):
-                    	    //trigger_error("The uploaded file exceeds the MAX_FILE_SIZE directive that was specified in the HTML form.");
                     	    $this->error = "Uploaded file exceeds the maximum size.";
-                    	    break;
-                    	case(3):
-                    	    //trigger_error("The uploaded file was only partially uploaded.");
-                    	    $this->error = "An error occured while uploading the file.";
                     	    break;
                     	case(4):
-                    	    //trigger_error("No file was uploaded.");
                     	    $this->error = "Please select a valid file to upload";
                     	    break;
-                    	case(6):
-                    	    //trigger_error("Missing a temporary folder. Introduced in PHP 4.3.10 and PHP 5.0.3.");
-                    	    $this->error = "An error occured while uploading the file.";
-                    	    break;
-                    	case(7):
-                    	    //trigger_error("Failed to write file to disk. Introduced in PHP 5.1.0.");
-                    	    $this->error = "An error occured while uploading the file.";
-                    	    break;
-                    	case(8):
-                    	    //trigger_error("A PHP extension stopped the file upload. PHP does not provide a way to ascertain which extension caused the file upload to stop; examining the list of loaded extensions with phpinfo() may help. Introduced in PHP 5.2.0.");
-                    	    $this->error = "An error occured while uploading the file.";
-                    	    break;
                     	case(9):
-                    	    //trigger_error("File size was empty");
                     	    $this->error = "The uploaded file appears to be empty";
                     	    break;
                     	default:
-                    	    //trigger_error("File upload failed with error code of " . $file['error']);
                     	    $this->error = "An error occured while uploading the file.";
                     	    break;
                     }
@@ -269,30 +201,46 @@ class Upload {
                 	return false;
                 } else {
                     $fileName = $file['name'];
-                    if ($this->renameType != null && $this->renameString != null) {
-                        $fileName = $this->renameString . $fileName;
+
+                    if (!strstr($fileName, '.')) {
+                        $this->error = "Invalid file selected";
+                        return false;
                     }
 
-                    $targetPath = $this->targetLocationFolder . DIRECTORY_SEPARATOR . $fileName;
-                    if (file_exists($targetPath)) {
-                        if ($this->forceRenameSuccess) {
-                            $fileName = $this->_getForcedIgnoreExisting('-' . $fileName);
-                            $targetPath = $this->targetLocationFolder . DIRECTORY_SEPARATOR . $fileName;
-                        } else {
-                        	//trigger_error("File already exists at target location");
-                        	$this->error = "This file already exists";
-                        	return false;
-                        }
+                    $originalFileName = $fileName;
+                    $fp = explode('.', $fileName);
+                    $fp[0] = substr(md5($fileName . microtime()), 0, 16);
+                    $fileName = implode('.', $fp);
+
+                    $testPath = $this->targetLocationFolder . DIRECTORY_SEPARATOR . $fileName;
+
+                    if (file_exists($testPath)) {
+                        $fp = explode('.', $originalFileName);
+                        $fp[0] = substr(md5($originalFileName . uniqid()), 0, 16);
+                        $fileName = implode('.', $fp);
+                        $testPath = $this->targetLocationFolder . DIRECTORY_SEPARATOR . $fileName;
                     }
 
-                    if (file_exists($targetPath)) {
-                        //trigger_error("File already exists at target location");
+                    if (file_exists($testPath)) {
                         $this->error = "This file already exists";
                         return false;
                     } else {
-                        if (@move_uploaded_file($file["tmp_name"],$targetPath)) {
-                            if (file_exists($targetPath)) {
-                                $this->finalLocation = $targetPath;
+                        if (!empty($this->validators)) {
+                            foreach ($this->validators as $validator) {
+    		                    /* @var $validator \Skinny\Validate\AbstractValidator */
+                                if (!$validator->isValid($file["tmp_name"])) {
+                                    if (property_exists($validator, 'errorMessage')) {
+                                        $this->error = $validator->errorMessage;
+                                    } else {
+                                        $this->error = "Invalid file selected";
+                                    }
+                                    return false;
+                                }
+                            }
+                        }
+                        if (@move_uploaded_file($file["tmp_name"], $testPath)) {
+                            if (file_exists($testPath)) {
+                                $this->finalLocation = $testPath;
                                 $this->finalName = $fileName;
                                 $this->success = true;
 								$this->uploadedName = $file['name'];
@@ -300,21 +248,17 @@ class Upload {
 	                    		$this->uploadedType = $file['type'];
 	                    		$this->uploadedSize = $file['size'];
                             } else {
-                                //trigger_error("File upload failed as file already exists.");
                                 $this->error = "An unknown error occured while uploading the file.";
                             }
                         } else {
-                            //trigger_error("Unable to move file to target location.");
                             $this->error = "An unknown error occured while uploading the file.";
                         }
                     }
                 }
             } else {
-                //trigger_error("Target form field name not found.");
                 $this->error = "Please choose a valid file to upload";
             }
         } else {
-            //trigger_error("No file was selected or files array was empty.");
             $this->error = "Please choose a valid file to upload";
         }
 

@@ -30,25 +30,42 @@
  * OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-namespace Skinny\Validate;
+namespace Skinny\Validate\File;
+
+use Skinny\Validate\AbstractValidator;
 
 /**
- * AbstractValidator
+ * Image
  *
- * Template class for Validators.
+ * Validates a given file location is a valid image
  *
  * @package Skinny
  * @author  Roger Thomas <roger.thomas@rogerethomas.com>
  */
-abstract class AbstractValidator {
+class Image extends AbstractValidator {
 
     /**
+     * Generic error message
      * @var string
      */
-    public $errorMessage = 'Validation failed';
+    public $errorMessage = "Invalid image specified";
 
-	public function isValid()
+	public function __construct()
 	{
+	}
 
+	/**
+	 * Ensure a given file location is an image.
+	 * @param mixed $value
+	 * @return boolean
+	 */
+	public function isValid($value)
+	{
+		if (@file_exists($value) && is_file($value)) {
+		    if (getimagesize($value)) {
+		        return true;
+		    }
+		}
+		return false;
 	}
 }
