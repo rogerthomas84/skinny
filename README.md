@@ -46,6 +46,10 @@ Validates a given value isn't empty
 Validates an email address is a valid format
 * [Read More](/library/Skinny/Docs/Validate_EmailAddress.md)
 
+### `/Skinny/Validate/File/Image` ###
+Validates a given file location is an image
+* [Read More](/library/Skinny/Docs/Validate_File_Image.md)
+
 
 
 April 2013
