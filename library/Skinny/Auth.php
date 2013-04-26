@@ -104,6 +104,29 @@ class Auth {
     }
 
     /**
+     * Add to the identity. This performs an array merge on the current
+     * identity, so you can override anyting you need to
+     *
+     * @param array $array
+     * @return boolean
+     */
+    public function addToIdentity($array)
+    {
+        if ($this->instance instanceof \Skinny\Storage) {
+            if ($this->instance->isLocked()) {
+                $this->instance->unlock();
+            }
+            $temp = $this->instance->get('identity');
+            $newIdentity = array_merge($temp, $array);
+            $this->instance->set('identity', $newIdentity);
+            $this->instance->lock();
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
      * Add a single role to a user
      *
      * @param string $role - a role identifier

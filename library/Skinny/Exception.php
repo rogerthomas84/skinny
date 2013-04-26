@@ -30,25 +30,12 @@
  * OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-namespace Skinny\Validate;
+namespace Skinny;
 
 /**
- * AbstractValidator
- *
- * Template class for Validators.
+ * Simple Exception Class
  *
  * @package Skinny
  * @author  Roger Thomas <roger.thomas@rogerethomas.com>
  */
-abstract class AbstractValidator {
-
-    /**
-     * @var string
-     */
-    public $errorMessage = 'Validation failed';
-
-	public function isValid()
-	{
-
-	}
-}
+class Exception extends \Exception {}

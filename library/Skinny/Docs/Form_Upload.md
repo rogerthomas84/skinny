@@ -12,11 +12,12 @@ $class->setFormFieldName('upload_file');
 // Set the folder to store the upload
 $class->setTargetFolder("/tmp");
 
-// Should the file be renamed?
-$class->setForceUploadRename(true);
-
-// How should the renaming be performed?
-$class->setRenameMethod($class::RENAME_PREPEND_TIMESTAMP);
+// Set an array of \Skinny\Validate\* to validate against
+$class->setValidators(
+    array(
+        new \Skinny\Validate\File\Image()
+    )
+);
 
 // Received?
 if (!$class->receive()) {
