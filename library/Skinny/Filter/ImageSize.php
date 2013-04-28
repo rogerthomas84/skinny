@@ -72,8 +72,8 @@ class ImageSize {
     public function __construct($filename)
     {
         $this->fileInfo = getimagesize($filename);
-        if (!$this->fileInfo) {
-            throw new \Skinny\Exception('Invalid image file provided.');
+        if (!is_array($this->fileInfo)) {
+            throw new \Skinny\Exception('Invalid image file provided ' . $filename);
         }
         $this->type = $this->fileInfo[2];
         if($this->type == IMAGETYPE_PNG) {
