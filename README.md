@@ -38,9 +38,9 @@ Provides a Session Namespace approach to storing data for a users session.
 
 ## Validators ##
 
-### `/Skinny/Validate/NotEmpty` ###
-Validates a given value isn't empty
-* [Read More](/library/Skinny/Docs/Validate_NotEmpty.md)
+### `/Skinny/Validate/Date` ###
+Validates a date is valid according to a format
+* [Read More](/library/Skinny/Docs/Validate_Date.md)
 
 ### `/Skinny/Validate/EmailAddress` ###
 Validates an email address is a valid format
@@ -50,6 +50,16 @@ Validates an email address is a valid format
 Validates a given file location is an image
 * [Read More](/library/Skinny/Docs/Validate_File_Image.md)
 
+### `/Skinny/Validate/NotEmpty` ###
+Validates a given value isn't empty
+* [Read More](/library/Skinny/Docs/Validate_NotEmpty.md)
 
+## Filters ##
 
-April 2013
+### `/Skinny/Filter/HtmlEntities` ###
+This class provides a simple way of using HTML Entities (Originally from Zend Framework)
+* [Read More](/library/Skinny/Docs/Filter_HtmlEntities.md)
+
+### `/Skinny/Filter/ImageSize` ###
+This class extends the basic functionality to interact and manipulate an image size.
+* [Read More](/library/Skinny/Docs/Filter_ImageSize.md)
