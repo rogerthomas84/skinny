@@ -1,4 +1,4 @@
-# \Skinny\Validate\File/Image #
+# \Skinny\Validate\File\Image #
 
 ## Usage ##
 
