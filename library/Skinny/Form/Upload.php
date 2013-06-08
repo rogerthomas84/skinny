@@ -118,6 +118,11 @@ class Upload {
     /**
      * @var string
      */
+    private $originalName = null;
+
+    /**
+     * @var string
+     */
     private $renameType = null;
 
     /**
@@ -166,12 +171,10 @@ class Upload {
         $this->success = false;
 
         if (null === $this->targetLocationFolder) {
-            //trigger_error("targetLocationFolder not set");
             return false;
         }
 
         if (null === $this->formFieldName) {
-            //trigger_error("formFieldName not set");
             return false;
         }
 
@@ -184,8 +187,10 @@ class Upload {
                     }
                     switch((int)$file["error"]) {
                     	case(1):
+                    	    $this->error = "Uploaded file exceeds the maximum size of " . ini_get('upload_max_filesize') . ".";
+                    	    break;
                     	case(2):
-                    	    $this->error = "Uploaded file exceeds the maximum size.";
+                    	    $this->error = "Uploaded file exceeds the maximum size " . ini_get('upload_max_filesize') . ".";
                     	    break;
                     	case(4):
                     	    $this->error = "Please select a valid file to upload";
@@ -240,6 +245,7 @@ class Upload {
                         }
                         if (@move_uploaded_file($file["tmp_name"], $testPath)) {
                             if (file_exists($testPath)) {
+                                $this->originalName = $originalFileName;
                                 $this->finalLocation = $testPath;
                                 $this->finalName = $fileName;
                                 $this->success = true;
@@ -295,6 +301,20 @@ class Upload {
         }
 
         return $this->finalLocation;
+    }
+
+    /**
+     * Retrieve the original file name
+     * @example picture.jpg
+     * @return string | boolean false for not valid
+     */
+    public function getOriginalFileName()
+    {
+        if (null === $this->originalName) {
+            return false;
+        }
+
+        return $this->originalName;
     }
 
     /**
