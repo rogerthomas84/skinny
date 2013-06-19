@@ -52,19 +52,19 @@ class Date extends AbstractValidator {
     /**
      * @param string $format
      */
-	public function __construct($format)
-	{
-	    $this->format = $format;
-	}
+    public function __construct($format)
+    {
+        $this->format = $format;
+    }
 
-	/**
-	 * Ensure a date is a valid format
-	 * @param string $value
-	 * @return boolean
-	 */
-	public function isValid($value)
-	{
-		$test = date($this->format, strtotime($value));
+    /**
+     * Ensure a date is a valid format
+     * @param string $value
+     * @return boolean
+     */
+    public function isValid($value)
+    {
+        $test = date($this->format, strtotime($value));
         return ($test == $value);
-	}
+    }
 }

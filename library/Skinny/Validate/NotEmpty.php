@@ -44,26 +44,26 @@ use Skinny\Validate\AbstractValidator;
  */
 class NotEmpty extends AbstractValidator {
 
-	public function __construct()
-	{
-	}
+    public function __construct()
+    {
+    }
 
-	/**
-	 * Ensure a value is not empty
-	 * @param mixed $value
-	 * @return boolean
-	 */
-	public function isValid($value)
-	{
-		if (is_array($value) || is_object($value)) {
-			if (empty($value)) {
-				return false;
-			}
-		}
-		if (mb_strlen((string)$value) == 0) {
-			return false;
-		}
+    /**
+     * Ensure a value is not empty
+     * @param mixed $value
+     * @return boolean
+     */
+    public function isValid($value)
+    {
+        if (is_array($value) || is_object($value)) {
+            if (empty($value)) {
+                return false;
+            }
+        }
+        if (mb_strlen((string)$value) == 0) {
+            return false;
+        }
 
-		return true;
-	}
+        return true;
+    }
 }
