@@ -182,7 +182,7 @@ class Upload {
             if (array_key_exists($this->formFieldName, $_FILES)) {
                 $file = $_FILES[$this->formFieldName];
                 if ($file["error"] > 0 || $file["size"] == 0) {
-                    if ($file["size"] == 0) {
+                    if ($file["error"] == 0 && $file["size"] == 0) {
                         $file['error'] = 9;
                     }
                     switch((int)$file["error"]) {
