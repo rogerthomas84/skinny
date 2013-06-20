@@ -50,22 +50,22 @@ class Image extends AbstractValidator {
      */
     public $errorMessage = "Invalid image specified";
 
-	public function __construct()
-	{
-	}
+    public function __construct()
+    {
+    }
 
-	/**
-	 * Ensure a given file location is an image.
-	 * @param mixed $value
-	 * @return boolean
-	 */
-	public function isValid($value)
-	{
-		if (@file_exists($value) && is_file($value)) {
-		    if (getimagesize($value)) {
-		        return true;
-		    }
-		}
-		return false;
-	}
+    /**
+     * Ensure a given file location is an image.
+     * @param mixed $value
+     * @return boolean
+     */
+    public function isValid($value)
+    {
+        if (@file_exists($value) && is_file($value)) {
+            if (getimagesize($value)) {
+                return true;
+            }
+        }
+        return false;
+    }
 }

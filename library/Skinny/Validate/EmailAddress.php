@@ -44,17 +44,17 @@ use Skinny\Validate\AbstractValidator;
  */
 class EmailAddress extends AbstractValidator {
 
-	public function __construct()
-	{
-	}
+    public function __construct()
+    {
+    }
 
-	/**
-	 * Ensure an email address is a valid format
-	 * @param mixed $value
-	 * @return boolean
-	 */
-	public function isValid($value)
-	{
-		return filter_var($value, FILTER_VALIDATE_EMAIL);
-	}
+    /**
+     * Ensure an email address is a valid format
+     * @param mixed $value
+     * @return boolean
+     */
+    public function isValid($value)
+    {
+        return filter_var($value, FILTER_VALIDATE_EMAIL);
+    }
 }

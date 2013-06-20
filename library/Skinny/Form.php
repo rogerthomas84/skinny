@@ -43,24 +43,24 @@ namespace Skinny;
  */
 class Form {
 
-	/**
-	 * @var array()
-	 */
-	private $fields = array();
+    /**
+     * @var array()
+     */
+    private $fields = array();
 
-	/**
-	 * @var array()
-	 */
-	private $validators = array();
+    /**
+     * @var array()
+     */
+    private $validators = array();
 
-	/**
-	 * @var array()
-	 */
-	private $required = array();
+    /**
+     * @var array()
+     */
+    private $required = array();
 
-	/**
-	 * Constructor
-	 */
+    /**
+     * Constructor
+     */
     public function __construct() {
 
     }
@@ -73,12 +73,12 @@ class Form {
      * @param array $validators
      */
     public function addElement($name, $required = false, $validators = array()) {
-    	if ($required == true) {
-    		$validators[] = new \Skinny\Validate\NotEmpty();
-    	}
-    	$this->fields[] = $name;
-    	$this->validators[$name] = $validators;
-    	$this->required[$name] = $required;
+        if ($required == true) {
+            $validators[] = new \Skinny\Validate\NotEmpty();
+        }
+        $this->fields[] = $name;
+        $this->validators[$name] = $validators;
+        $this->required[$name] = $required;
     }
 
     /**
@@ -89,21 +89,21 @@ class Form {
      * @return boolean
      */
     public function isValid($postParams) {
-    	if (!is_array($postParams)) {
-    		return false;
-    	}
+        if (!is_array($postParams)) {
+            return false;
+        }
 
-    	foreach ($this->fields as $field) {
-    		if (!array_key_exists($field, $postParams)) {
-    			continue; // not presented to validate against.
-    		}
-    		/* @var $validator \Skinny\Validate\AbstractValidator */
-    		foreach ($this->validators[$field] as $validator) {
-    			if (!$validator->isValid($postParams[$field])) {
-    				return false;
-    			}
-    		}
-    	}
-    	return true;
+        foreach ($this->fields as $field) {
+            if (!array_key_exists($field, $postParams)) {
+                continue; // not presented to validate against.
+            }
+            /* @var $validator \Skinny\Validate\AbstractValidator */
+            foreach ($this->validators[$field] as $validator) {
+                if (!$validator->isValid($postParams[$field])) {
+                    return false;
+                }
+            }
+        }
+        return true;
     }
 }

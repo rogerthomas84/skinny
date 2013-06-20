@@ -186,24 +186,24 @@ class Upload {
                         $file['error'] = 9;
                     }
                     switch((int)$file["error"]) {
-                    	case(1):
-                    	    $this->error = "Uploaded file exceeds the maximum size of " . ini_get('upload_max_filesize') . ".";
-                    	    break;
-                    	case(2):
-                    	    $this->error = "Uploaded file exceeds the maximum size " . ini_get('upload_max_filesize') . ".";
-                    	    break;
-                    	case(4):
-                    	    $this->error = "Please select a valid file to upload";
-                    	    break;
-                    	case(9):
-                    	    $this->error = "The uploaded file appears to be empty";
-                    	    break;
-                    	default:
-                    	    $this->error = "An error occured while uploading the file.";
-                    	    break;
+                        case(1):
+                            $this->error = "Uploaded file exceeds the maximum size of " . ini_get('upload_max_filesize') . ".";
+                            break;
+                        case(2):
+                            $this->error = "Uploaded file exceeds the maximum size " . ini_get('upload_max_filesize') . ".";
+                            break;
+                        case(4):
+                            $this->error = "Please select a valid file to upload";
+                            break;
+                        case(9):
+                            $this->error = "The uploaded file appears to be empty";
+                            break;
+                        default:
+                            $this->error = "An error occured while uploading the file.";
+                            break;
                     }
 
-                	return false;
+                    return false;
                 } else {
                     $fileName = $file['name'];
 
@@ -232,7 +232,7 @@ class Upload {
                     } else {
                         if (!empty($this->validators)) {
                             foreach ($this->validators as $validator) {
-    		                    /* @var $validator \Skinny\Validate\AbstractValidator */
+                                /* @var $validator \Skinny\Validate\AbstractValidator */
                                 if (!$validator->isValid($file["tmp_name"])) {
                                     if (property_exists($validator, 'errorMessage')) {
                                         $this->error = $validator->errorMessage;
@@ -249,10 +249,10 @@ class Upload {
                                 $this->finalLocation = $testPath;
                                 $this->finalName = $fileName;
                                 $this->success = true;
-								$this->uploadedName = $file['name'];
-	                    		$this->uploadedTempName = $file['tmp_name'];
-	                    		$this->uploadedType = $file['type'];
-	                    		$this->uploadedSize = $file['size'];
+                                $this->uploadedName = $file['name'];
+                                $this->uploadedTempName = $file['tmp_name'];
+                                $this->uploadedType = $file['type'];
+                                $this->uploadedSize = $file['size'];
                             } else {
                                 $this->error = "An unknown error occured while uploading the file.";
                             }
