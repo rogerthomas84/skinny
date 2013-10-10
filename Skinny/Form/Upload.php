@@ -63,67 +63,67 @@ class Upload {
     /**
      * @var string
      */
-    private $formFieldName = null;
+    protected $formFieldName = null;
 
     /**
      * @var string
      */
-    private $targetLocationFolder = null;
+    protected $targetLocationFolder = null;
 
     /**
      * @var string
      */
-    private $uploadedTempName = null;
+    protected $uploadedTempName = null;
 
     /**
      * @var string
      */
-    private $uploadedName = null;
+    protected $uploadedName = null;
 
     /**
      * @var string
      */
-    private $uploadedSize = null;
+    protected $uploadedSize = null;
 
     /**
      * @var string
      */
-    private $uploadedType = null;
+    protected $uploadedType = null;
 
     /**
      * @var array
      */
-    private $validators = null;
+    protected $validators = null;
 
     /**
      * @var string
      */
-    private $error = null;
+    protected $error = null;
 
     /**
      * @var boolean
      */
-    private $success = false;
+    protected $success = false;
 
     /**
      * @var string
      */
-    private $finalLocation = null;
+    protected $finalLocation = null;
 
     /**
      * @var string
      */
-    private $finalName = null;
+    protected $finalName = null;
 
     /**
      * @var string
      */
-    private $originalName = null;
+    protected $originalName = null;
 
     /**
      * @var string
      */
-    private $renameType = null;
+    protected $renameType = null;
 
     /**
      * Initialise the upload class
