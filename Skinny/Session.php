@@ -32,8 +32,6 @@
  */
 namespace Skinny;
 
-use \Skinny\Storage;
-
 /**
  * Session
  *

@@ -32,8 +32,6 @@
  */
 namespace Skinny;
 
-use Skinny\Storage;
-
 /**
  * Auth
  *
@@ -117,6 +115,9 @@ class Auth {
                 $this->instance->unlock();
             }
             $temp = $this->instance->get('identity');
+            if (!$temp) {
+                $temp = array();
+            }
             $newIdentity = array_merge($temp, $array);
             $this->instance->set('identity', $newIdentity);
             $this->instance->lock();
