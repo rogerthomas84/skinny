@@ -94,11 +94,11 @@ class Form {
         }
 
         foreach ($this->fields as $field) {
-            if (!array_key_exists($field, $postParams)) {
-                continue; // not presented to validate against.
-            }
             /* @var $validator \Skinny\Validate\AbstractValidator */
             foreach ($this->validators[$field] as $validator) {
+                if (!array_key_exists($field, $postParams)) {
+                    return false;
+                }
                 if (!$validator->isValid($postParams[$field])) {
                     return false;
                 }
