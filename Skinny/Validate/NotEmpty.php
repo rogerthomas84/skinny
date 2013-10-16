@@ -57,10 +57,14 @@ class NotEmpty extends AbstractValidator {
     {
         if (is_array($value) || is_object($value)) {
             if (empty($value)) {
+
                 return false;
             }
+
+            return true;
         }
         if (mb_strlen((string)$value) == 0) {
+
             return false;
         }
 
