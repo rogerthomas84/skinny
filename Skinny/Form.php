@@ -46,17 +46,17 @@ class Form {
     /**
      * @var array()
      */
-    private $fields = array();
+    protected $fields = array();
 
     /**
      * @var array()
      */
-    private $validators = array();
+    protected $validators = array();
 
     /**
      * @var array()
      */
-    private $required = array();
+    protected $required = array();
 
     /**
      * Constructor
