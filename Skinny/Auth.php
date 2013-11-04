@@ -84,10 +84,10 @@ class Auth {
     /**
      * Set roles for a user
      *
-     * @param array $roles - the users roles
+     * @param array $roles (optional) - the users roles
      * @return boolean
      */
-    public function setRoles($roles = array())
+    public function setRoles(array $roles = array())
     {
         if ($this->instance instanceof \Skinny\Storage) {
             if ($this->instance->isLocked()) {
@@ -159,7 +159,7 @@ class Auth {
     /**
      * Remove a single role from a user
      *
-     * @param mixed<> $role - a role identifier
+     * @param string $role - a role identifier
      * @return boolean
      */
     public function removeRole($role)
@@ -192,7 +192,7 @@ class Auth {
     /**
      * Check if a user has a given role
      *
-     * @param mixed<> $role
+     * @param string $role
      * @return boolean
      */
     public function hasRole($role)
@@ -210,10 +210,10 @@ class Auth {
     /**
      * Destroy an authentication session.
      *
-     * @param mixed $identity - the users account details.
+     * @param array $identity (optional) - the users account details.
      * @return boolean
      */
-    public function login($identity)
+    public function login(array $identity = array())
     {
         if ($this->instance instanceof \Skinny\Storage) {
             if ($this->instance->isLocked()) {
@@ -232,7 +232,7 @@ class Auth {
      * Retrieve the users identity as set by login
      *
      * @see \Skinny\Auth::login
-     * @return mixed|boolean false for no identity
+     * @return array|boolean false for no identity
      */
     public function getIdentity()
     {
