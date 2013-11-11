@@ -46,9 +46,4 @@ abstract class AbstractValidator {
      * @var string
      */
     public $errorMessage = 'Validation failed';
-
-    public function isValid()
-    {
-
-    }
 }

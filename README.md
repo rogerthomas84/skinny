@@ -7,6 +7,12 @@ This is currently a work in progress, but gradually there will be different clas
 
 # Classes #
 
+## Routing ##
+
+### `/Skinny/Router` ###
+This class provides a basic, yet effective router for applications. See the documentation for details.
+* [Read More](/library/Skinny/Docs/Router.md)
+
 ## Authentication ##
 
 ### `/Skinny/Auth` ###

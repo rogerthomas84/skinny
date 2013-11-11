@@ -41,8 +41,8 @@ namespace Skinny;
  * @package Skinny
  * @author  Roger Thomas <roger.thomas@rogerethomas.com>
  */
-class Form {
-
+class Form
+{
     /**
      * @var array()
      */
@@ -61,7 +61,8 @@ class Form {
     /**
      * Constructor
      */
-    public function __construct() {
+    public function __construct()
+    {
 
     }
 
@@ -72,7 +73,8 @@ class Form {
      * @param boolean $required
      * @param array $validators
      */
-    public function addElement($name, $required = false, $validators = array()) {
+    public function addElement($name, $required = false, $validators = array())
+    {
         if ($required == true) {
             $validators[] = new \Skinny\Validate\NotEmpty();
         }
@@ -88,7 +90,8 @@ class Form {
      * @param array $postParams
      * @return boolean
      */
-    public function isValid($postParams) {
+    public function isValid($postParams)
+    {
         if (!is_array($postParams)) {
             return false;
         }
