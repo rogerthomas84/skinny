@@ -68,8 +68,12 @@ class MemcacheService implements Cache
      */
     protected function __construct($host, $port = null, $timeout = null)
     {
-        $this->memcache = new \Memcache($host, $port, $timeout);
-        $this->connected = $this->memcache->connect($host);
+        if (class_exists('\Memcache')) {
+            $this->memcache = new \Memcache($host, $port, $timeout);
+            $this->connected = $this->memcache->connect($host);
+        } else {
+            $this->connected = false;
+        }
     }
 
     /**

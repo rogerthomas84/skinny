@@ -2,6 +2,7 @@
 namespace Skinny\Tests;
 
 use Skinny\Form;
+use Skinny\Validate\NotEmpty;
 
 class FormTest extends \PHPUnit_Framework_TestCase
 {
@@ -82,5 +83,17 @@ class FormTest extends \PHPUnit_Framework_TestCase
         $this->form->addElement('test1', true);
         $result = $this->form->isValid(array('another' => 'joe'));
         $this->assertFalse($result);
+    }
+
+    public function testErrorMessageExpected()
+    {
+        $this->reset();
+        $this->form->addElement('test1', true, array(new NotEmpty()), 'Test field one');
+        $result = $this->form->isValid(array('test1' => ''));
+        $this->assertFalse($result);
+        $errors = $this->form->getErrors();
+        $this->assertCount(1, $errors);
+        $this->assertArrayHasKey('test1', $errors);
+        $this->assertCount(1, $errors['test1']);
     }
 }

@@ -45,10 +45,9 @@ use Skinny\Validate\AbstractValidator;
 class Image extends AbstractValidator {
 
     /**
-     * Generic error message
      * @var string
      */
-    public $errorMessage = "Invalid image specified";
+    public $errorMessage = '%s is not a valid image.';
 
     public function __construct()
     {
@@ -62,7 +61,7 @@ class Image extends AbstractValidator {
     public function isValid($value)
     {
         if (@file_exists($value) && is_file($value)) {
-            if (getimagesize($value)) {
+            if (@getimagesize($value)) {
                 return true;
             }
         }

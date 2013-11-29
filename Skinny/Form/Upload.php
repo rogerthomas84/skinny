@@ -199,7 +199,7 @@ class Upload {
                             $this->error = "The uploaded file appears to be empty";
                             break;
                         default:
-                            $this->error = "An error occured while uploading the file.";
+                            $this->error = "An error occurred while uploading the file.";
                             break;
                     }
 
@@ -254,10 +254,10 @@ class Upload {
                                 $this->uploadedType = $file['type'];
                                 $this->uploadedSize = $file['size'];
                             } else {
-                                $this->error = "An unknown error occured while uploading the file.";
+                                $this->error = "An unknown error occurred while uploading the file.";
                             }
                         } else {
-                            $this->error = "An unknown error occured while uploading the file.";
+                            $this->error = "An unknown error occurred while uploading the file.";
                         }
                     }
                 }
@@ -329,23 +329,5 @@ class Upload {
         }
 
         return $this->finalName;
-    }
-
-    /**
-     * Append digit onto filename and call self method in a loop
-     * until a non existent filename is located.
-     *
-     * @param string $fileName
-     * @return string
-     */
-    protected function _getForcedIgnoreExisting($fileName)
-    {
-        $fileName = rand(1,9) . $fileName;
-        $targetPath = $this->targetLocationFolder . DIRECTORY_SEPARATOR . $fileName;
-        if (file_exists($targetPath)) {
-            return $this->_getForcedIgnoreExisting($fileName);
-        }
-
-        return $fileName;
     }
 }
