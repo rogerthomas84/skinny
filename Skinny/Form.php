@@ -44,19 +44,29 @@ namespace Skinny;
 class Form
 {
     /**
-     * @var array()
+     * @var array
      */
     protected $fields = array();
 
     /**
-     * @var array()
+     * @var array
      */
     protected $validators = array();
 
     /**
-     * @var array()
+     * @var array
      */
     protected $required = array();
+
+    /**
+     * @var array
+     */
+    protected $errorMessages = array();
+
+    /**
+     * @var array
+     */
+    protected $logicalNames = array();
 
     /**
      * Constructor
@@ -72,15 +82,25 @@ class Form
      * @param string $name
      * @param boolean $required
      * @param array $validators
+     * @param string $logicalName
      */
-    public function addElement($name, $required = false, $validators = array())
+    public function addElement($name, $required = false, $validators = array(), $logicalName = null)
     {
         if ($required == true) {
-            $validators[] = new \Skinny\Validate\NotEmpty();
+            $hasNotEmpty = false;
+            foreach ($validators as $validator) {
+                if ($validator instanceof \Skinny\Validate\NotEmpty) {
+                    $hasNotEmpty = true;
+                }
+            }
+            if (!$hasNotEmpty) {
+                $validators[] = new \Skinny\Validate\NotEmpty();
+            }
         }
         $this->fields[] = $name;
         $this->validators[$name] = $validators;
         $this->required[$name] = $required;
+        $this->logicalNames[$name] = $logicalName;
     }
 
     /**
@@ -93,20 +113,54 @@ class Form
     public function isValid($postParams)
     {
         if (!is_array($postParams)) {
+            $this->errorMessages = array('Form was invalid.');
             return false;
         }
 
+        $valid = true;
         foreach ($this->fields as $field) {
             /* @var $validator \Skinny\Validate\AbstractValidator */
             foreach ($this->validators[$field] as $validator) {
                 if (!array_key_exists($field, $postParams)) {
-                    return false;
+                    $this->addError($field, '%s must be provided.');
+                    $valid = false;
+                    continue;
                 }
                 if (!$validator->isValid($postParams[$field])) {
-                    return false;
+                    $this->addError($field, $validator->errorMessage);
+                    $valid = false;
                 }
             }
         }
-        return true;
+        return $valid;
+    }
+
+    /**
+     * Add a message to a given field.
+     * @param string $fieldName
+     * @param string $message
+     */
+    protected function addError($fieldName, $message)
+    {
+        if ($this->logicalNames[$fieldName] == null) {
+            return;
+        }
+        if (!array_key_exists($fieldName, $this->errorMessages)) {
+            $this->errorMessages[$fieldName] = array();
+        }
+        $this->errorMessages[$fieldName][] = sprintf(
+            $message,
+            $this->logicalNames[$fieldName]
+        );
+        return;
+    }
+
+    /**
+     * Get an array of error messagas back.
+     * @return array
+     */
+    public function getErrors()
+    {
+        return $this->errorMessages;
     }
 }

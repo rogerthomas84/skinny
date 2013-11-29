@@ -44,6 +44,11 @@ use Skinny\Validate\AbstractValidator;
  */
 class EmailAddress extends AbstractValidator {
 
+    /**
+     * @var string
+     */
+    public $errorMessage = '%s is not valid.';
+
     public function __construct()
     {
     }

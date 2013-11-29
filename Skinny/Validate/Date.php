@@ -47,6 +47,11 @@ class Date extends AbstractValidator {
     /**
      * @var string
      */
+    public $errorMessage = '%s is not in a valid format.';
+
+    /**
+     * @var string
+     */
     private $format = 'Y-m-d H:i:s';
 
     /**

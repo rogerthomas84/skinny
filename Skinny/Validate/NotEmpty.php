@@ -44,6 +44,11 @@ use Skinny\Validate\AbstractValidator;
  */
 class NotEmpty extends AbstractValidator {
 
+    /**
+     * @var string
+     */
+    public $errorMessage = '%s is required and cannot be empty.';
+
     public function __construct()
     {
     }
