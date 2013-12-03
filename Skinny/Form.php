@@ -126,6 +126,9 @@ class Form
                     $valid = false;
                     continue;
                 }
+
+                $validator->setData($postParams);
+
                 if (!$validator->isValid($postParams[$field])) {
                     $this->addError($field, $validator->errorMessage);
                     $valid = false;

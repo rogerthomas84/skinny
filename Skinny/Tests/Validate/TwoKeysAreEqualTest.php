@@ -30,34 +30,46 @@
  * OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-namespace Skinny\Validate;
+namespace Skinny\Tests\Validate;
 
-/**
- * AbstractValidator
- *
- * Template class for Validators.
- *
- * @package Skinny
- * @author  Roger Thomas <roger.thomas@rogerethomas.com>
- */
-abstract class AbstractValidator {
+use Skinny\Validate\TwoKeysAreEqual;
 
+class TwoKeysAreEqualTest extends \PHPUnit_Framework_TestCase
+{
     /**
-     * @var string
+     * @var TwoKeysAreEqual|null
      */
-    public $errorMessage = '%s invalid value provided.';
+    private $validator = null;
 
-    /**
-     * @var array
-     */
-    public $data = array();
-
-    /**
-     * Set an array of data from a form.
-     * @param array $data
-     */
-    function setData(array $data)
+    public function setUp()
     {
-        $this->data = $data;
+        $this->validator = new TwoKeysAreEqual('repeatPassword');
+        $this->validator->setData(
+            array(
+                'repeatPassword' => 'joebloggs12345'
+            )
+        );
+    }
+
+    public function testValidatorValid()
+    {
+        $this->assertTrue($this->validator->isValid('joebloggs12345'));
+    }
+
+    public function testValidatorInvalid()
+    {
+        $this->assertFalse($this->validator->isValid('thisisnotthesame'));
+    }
+
+    public function testValidatorVariableTypesWork()
+    {
+        $this->assertFalse($this->validator->isValid(0));
+        $this->validator->setData(
+            array(
+                'repeatPassword' => '0'
+            )
+        );
+        $this->assertFalse($this->validator->isValid(0));
+        $this->assertTrue($this->validator->isValid('0'));
     }
 }
