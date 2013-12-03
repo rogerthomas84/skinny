@@ -32,32 +32,51 @@
  */
 namespace Skinny\Validate;
 
+use Skinny\Validate\AbstractValidator;
+
 /**
- * AbstractValidator
+ * TwoKeysAreEqual
  *
- * Template class for Validators.
+ * Validates a given value matches a key from an array
  *
  * @package Skinny
  * @author  Roger Thomas <roger.thomas@rogerethomas.com>
  */
-abstract class AbstractValidator {
+class TwoKeysAreEqual extends AbstractValidator {
 
     /**
      * @var string
      */
-    public $errorMessage = '%s invalid value provided.';
+    public $errorMessage = '%s is not the same.';
 
     /**
-     * @var array
+     * @var string
      */
-    public $data = array();
+    public $mustMatchKey = null;
 
     /**
-     * Set an array of data from a form.
-     * @param array $data
+     * Construct, giving the key name of the data that this must match.
+     * @param string $mustMatchKey
      */
-    function setData(array $data)
+    public function __construct($mustMatchKey)
     {
-        $this->data = $data;
+        $this->mustMatchKey = $mustMatchKey;
+    }
+
+    /**
+     * Ensure a value matches the a specified key in the array
+     * of data.
+     * @param mixed $value
+     * @return boolean
+     */
+    public function isValid($value)
+    {
+        if (array_key_exists($this->mustMatchKey, $this->data)) {
+            if ($this->data[$this->mustMatchKey] === $value) {
+                return true;
+            }
+        }
+
+        return false;
     }
 }
