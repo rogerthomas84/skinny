@@ -1,4 +1,5 @@
 <?php
+ob_start();
 /**
  * Skinny - a straight forward no-nonsense PHP library
  *
@@ -6,7 +7,7 @@
  * @copyright   2013 Roger Thomas
  * @link        http://www.rogerethomas.com
  * @license     http://www.rogerethomas.com/license
- * @version     2.0.1
+ * @version     2.0.3
  * @package     Skinny
  *
  * MIT LICENSE
@@ -31,22 +32,6 @@
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 $dir = realpath(__DIR__ . '/../../');
-require_once $dir . '/Skinny/Filter/HtmlEntities.php';
-require_once $dir . '/Skinny/Filter/ImageSize.php';
-require_once $dir . '/Skinny/Cache.php';
-require_once $dir . '/Skinny/Cache/MemcacheService.php';
-require_once $dir . '/Skinny/Form/Upload.php';
-require_once $dir . '/Skinny/Validate/AbstractValidator.php';
-require_once $dir . '/Skinny/Validate/File/Image.php';
-require_once $dir . '/Skinny/Validate/Date.php';
-require_once $dir . '/Skinny/Validate/EmailAddress.php';
-require_once $dir . '/Skinny/Validate/NotEmpty.php';
-require_once $dir . '/Skinny/Auth.php';
-require_once $dir . '/Skinny/Storage.php';
-require_once $dir . '/Skinny/Session.php';
-require_once $dir . '/Skinny/Router.php';
-require_once $dir . '/Skinny/Form.php';
-require_once $dir . '/Skinny/Exception.php';
 
 spl_autoload_register(
     function($class)

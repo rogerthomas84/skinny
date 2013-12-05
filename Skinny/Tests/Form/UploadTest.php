@@ -6,7 +6,7 @@
  * @copyright   2013 Roger Thomas
  * @link        http://www.rogerethomas.com
  * @license     http://www.rogerethomas.com/license
- * @version     2.0.1
+ * @version     2.0.3
  * @package     Skinny
  *
  * MIT LICENSE
@@ -60,6 +60,12 @@ class UploadTest extends \PHPUnit_Framework_TestCase
         $this->assertFalse($this->form->receive());
         $this->form->setTargetFolder(sys_get_temp_dir());
         $this->assertFalse($this->form->receive());
+    }
+
+    public function testInvalidPath()
+    {
+        $this->reset();
+        $this->assertNull($this->form->setTargetFolder('\\'));
     }
 
     public function testNothingSet()

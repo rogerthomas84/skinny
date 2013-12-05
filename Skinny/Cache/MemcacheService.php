@@ -6,7 +6,7 @@
  * @copyright   2013 Roger Thomas
  * @link        http://www.rogerethomas.com
  * @license     http://www.rogerethomas.com/license
- * @version     2.0.1
+ * @version     2.0.3
  * @package     Skinny
  *
  * MIT LICENSE
@@ -101,6 +101,10 @@ class MemcacheService implements Cache
             self::$cache = new self($host, $port, $timeout);
         }
 
+        if (self::$cache->connected == false) {
+            self::$cache = new self($host, $port, $timeout);
+        }
+
         return self::$cache;
     }
 
@@ -176,5 +180,16 @@ class MemcacheService implements Cache
         }
 
         return $this->memcache->set($key, $value, $compression, $timeout);
+    }
+
+    /**
+     * Disconnect from Memcache
+     */
+    public function disconnect()
+    {
+        if ($this->connected) {
+            $this->memcache->close();
+        }
+        $this->connected = false;
     }
 }

@@ -6,7 +6,7 @@
  * @copyright   2013 Roger Thomas
  * @link        http://www.rogerethomas.com
  * @license     http://www.rogerethomas.com/license
- * @version     2.0.1
+ * @version     2.0.3
  * @package     Skinny
  *
  * MIT LICENSE
@@ -291,9 +291,33 @@ class Auth {
     }
 
     /**
+     * Get the storage object
+     * @return \Skinny\Storage|boolean false
+     */
+    public function getStorage()
+    {
+        if ($this->instance instanceof \Skinny\Storage) {
+            return $this->instance;
+        }
+
+        return false;
+    }
+
+    /**
+     * Destroy the instance of Storage
+     */
+    public function destroy()
+    {
+        if ($this->instance instanceof \Skinny\Storage) {
+            $this->instance->destroy();
+        }
+        $this->instance = null;
+    }
+
+    /**
      * Setup the namespace object
      */
-    protected function setup()
+    public function setup()
     {
         $this->instance = new \Skinny\Storage('__Sf_Auth');
         $this->instance->lock();

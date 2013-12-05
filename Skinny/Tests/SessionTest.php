@@ -30,53 +30,54 @@
  * OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-namespace Skinny\Validate;
+namespace Skinny\Tests;
 
-use Skinny\Validate\AbstractValidator;
+use Skinny\Session;
 
-/**
- * TwoKeysAreEqual
- *
- * Validates a given value matches a key from an array
- *
- * @package Skinny
- * @author  Roger Thomas <roger.thomas@rogerethomas.com>
- */
-class TwoKeysAreEqual extends AbstractValidator {
-
-    /**
-     * @var string
-     */
-    public $errorMessage = '%s is not the same.';
-
-    /**
-     * @var string
-     */
-    public $mustMatchKey = null;
-
-    /**
-     * Construct, giving the key name of the data that this must match.
-     * @param string $mustMatchKey
-     */
-    public function __construct($mustMatchKey)
+class SessionTest extends SessionTestBase
+{
+    private function reset()
     {
-        $this->mustMatchKey = $mustMatchKey;
+        return Session::getInstance();
     }
 
-    /**
-     * Ensure a value matches the a specified key in the array
-     * of data.
-     * @param mixed $value
-     * @return boolean
-     */
-    public function isValid($value)
+    public function testRegenerate()
     {
-        if (array_key_exists($this->mustMatchKey, $this->data)) {
-            if ($this->data[$this->mustMatchKey] === $value) {
-                return true;
-            }
-        }
+        $_SESSION = array();
+        $storage = $this->reset();
+        $this->assertTrue($storage->destroy(true));
+    }
 
-        return false;
+    public function testSetAndGet()
+    {
+        $_SESSION = array();
+        $storage = $this->reset();
+        $this->assertTrue($storage->set('abc', '123'));
+        $this->assertEquals('123', $storage->get('abc'));
+    }
+
+    public function testRemove()
+    {
+        $_SESSION = array();
+        $storage = $this->reset();
+        $storage->set('abc', '123');
+        $this->assertTrue($storage->remove('abc'));
+    }
+
+    public function testRemoveAll()
+    {
+        $_SESSION = array();
+        $storage = $this->reset();
+        $storage->set('abc', '123');
+        $this->assertTrue($storage->removeAll());
+    }
+
+    public function testHeaders()
+    {
+        $_SESSION = array();
+        header("ABC", "123");
+        $storage = $this->reset();
+        $storage->set('abc', '123');
+        $this->assertTrue($storage->removeAll());
     }
 }

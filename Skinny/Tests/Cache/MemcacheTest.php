@@ -6,7 +6,7 @@
  * @copyright   2013 Roger Thomas
  * @link        http://www.rogerethomas.com
  * @license     http://www.rogerethomas.com/license
- * @version     2.0.1
+ * @version     2.0.3
  * @package     Skinny
  *
  * MIT LICENSE
@@ -67,6 +67,24 @@ class MemcacheTest extends \PHPUnit_Framework_TestCase
         $this->memcache = MemcacheService::getInstance('localhost');
         $result = $this->memcache->set($this->prefix . 'abc', '123', 10);
         $this->assertTrue($result);
+        $this->memcache->disconnect();
+        $resultTwo = $this->memcache->set($this->prefix . 'abc', '123', 10);
+        // $resultTwo is void.
+    }
+
+    public function testGet()
+    {
+        if (!class_exists('\Memcache')) {
+            $this->markTestSkipped('Memcache is not installed. Skipping.');
+            return;
+        }
+        $this->memcache = MemcacheService::getInstance('localhost');
+        $this->memcache->set($this->prefix . 'abc', '123', 10);
+        $result = $this->memcache->get($this->prefix . 'abc');
+        $this->assertEquals('123', $result);
+        $this->memcache->disconnect();
+        $resultTwo = $this->memcache->get($this->prefix . 'abc');
+        $this->assertFalse($resultTwo);
     }
 
     public function testHas()
@@ -78,6 +96,11 @@ class MemcacheTest extends \PHPUnit_Framework_TestCase
         $this->memcache = MemcacheService::getInstance('localhost');
         $result = $this->memcache->has($this->prefix . 'abc');
         $this->assertTrue($result);
+        $resultTwo = $this->memcache->has($this->prefix . md5(microtime(true)));
+        $this->assertFalse($resultTwo);
+        $this->memcache->disconnect();
+        $result = $this->memcache->has($this->prefix . 'abc');
+        $this->assertFalse($result);
     }
 
     public function testRemove()
@@ -89,6 +112,9 @@ class MemcacheTest extends \PHPUnit_Framework_TestCase
         $this->memcache = MemcacheService::getInstance('localhost');
         $result = $this->memcache->remove($this->prefix . 'abc');
         $this->assertTrue($result);
+        $this->memcache->disconnect();
+        $resultTwo = $this->memcache->remove($this->prefix . 'abc');
+        $this->assertFalse($resultTwo);
     }
 
     public function testGetRaw()
@@ -100,5 +126,7 @@ class MemcacheTest extends \PHPUnit_Framework_TestCase
         $this->memcache = MemcacheService::getInstance('localhost');
         $result = $this->memcache->getMemcache();
         $this->assertInstanceOf('\Memcache', $result);
+        $this->memcache->disconnect();
+        $this->assertFalse($this->memcache->getMemcache());
     }
 }

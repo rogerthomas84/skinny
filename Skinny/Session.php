@@ -6,7 +6,7 @@
  * @copyright   2013 Roger Thomas
  * @link        http://www.rogerethomas.com
  * @license     http://www.rogerethomas.com/license
- * @version     2.0.1
+ * @version     2.0.3
  * @package     Skinny
  *
  * MIT LICENSE
@@ -159,19 +159,6 @@ class Session {
     public function get($name)
     {
         return $this->instance->get($name);
-    }
-
-    /**
-     * Validate the class is setup correctly.
-     *
-     * @return null
-     */
-    protected function _validate()
-    {
-        if (!$this->instance instanceof \Skinny\Storage || !isset($_SESSION)) {
-            throw new \Exception('Session data not available');
-        }
-        return;
     }
 
     /**

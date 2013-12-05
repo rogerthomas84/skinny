@@ -30,53 +30,36 @@
  * OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-namespace Skinny\Validate;
+namespace Skinny\Tests;
 
-use Skinny\Validate\AbstractValidator;
-
-/**
- * TwoKeysAreEqual
- *
- * Validates a given value matches a key from an array
- *
- * @package Skinny
- * @author  Roger Thomas <roger.thomas@rogerethomas.com>
- */
-class TwoKeysAreEqual extends AbstractValidator {
-
-    /**
-     * @var string
-     */
-    public $errorMessage = '%s is not the same.';
-
-    /**
-     * @var string
-     */
-    public $mustMatchKey = null;
-
-    /**
-     * Construct, giving the key name of the data that this must match.
-     * @param string $mustMatchKey
-     */
-    public function __construct($mustMatchKey)
+class SessionTestBase extends \PHPUnit_Framework_TestCase
+{
+    public function setUp()
     {
-        $this->mustMatchKey = $mustMatchKey;
+        $this->path = realpath(dirname(__FILE__));
     }
 
-    /**
-     * Ensure a value matches the a specified key in the array
-     * of data.
-     * @param mixed $value
-     * @return boolean
-     */
-    public function isValid($value)
+    protected function initServerVariables()
     {
-        if (array_key_exists($this->mustMatchKey, $this->data)) {
-            if ($this->data[$this->mustMatchKey] === $value) {
-                return true;
-            }
-        }
+        $_SERVER['REQUEST_METHOD'] = 'GET';
+        $_SERVER['REMOTE_ADDR'] = '127.0.0.1';
+        $_SERVER['REQUEST_URI'] = '/';
+        $_SERVER['SERVER_NAME'] = 'localhost';
+        $_SERVER['SERVER_PORT'] = '80';
+    }
 
-        return false;
+    protected function initLoggedOutSession()
+    {
+        $_SESSION = array();
+        $_SESSION['__Sf_pb'] = array('store' => array('__Sf_Auth' => array()), 'locks' => array());
+        $_SESSION['__Sf_pr'] = array('store' => array(), 'locks' => array());
+        $_SESSION['__Sf_pb']['store']['__Sf_Auth'] = array('identity' => false, 'roles' => false);
+    }
+
+    protected function initLoggedInSession()
+    {
+        $_SESSION['__Sf_pb'] = array('store' => array('__Sf_Auth' => array()), 'locks' => array('__Sf_Auth' => array()));
+        $_SESSION['__Sf_pr'] = array('store' => array(), 'locks' => array('__Sf_Auth' => array()));
+        $_SESSION['__Sf_pb']['store']['__Sf_Auth'] = array('identity' => array('name' => 'Joe Bloggs', 'age' => 30), 'roles' => array('admin', 'user'));
     }
 }
