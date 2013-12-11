@@ -6,7 +6,7 @@
  * @copyright   2013 Roger Thomas
  * @link        http://www.rogerethomas.com
  * @license     http://www.rogerethomas.com/license
- * @since       2.0
+ * @since       2.0.4
  * @package     Skinny
  *
  * MIT LICENSE
@@ -32,44 +32,50 @@
  */
 namespace Skinny\Tests\Validate;
 
-use Skinny\Validate\TwoKeysAreEqual;
+use Skinny\Validate\StringLength;
 
-class TwoKeysAreEqualTest extends \PHPUnit_Framework_TestCase
+class StringLengthTest extends \PHPUnit_Framework_TestCase
 {
-    /**
-     * @var TwoKeysAreEqual|null
-     */
-    private $validator = null;
-
     public function setUp()
     {
-        $this->validator = new TwoKeysAreEqual('repeatPassword');
-        $this->validator->setData(
-            array(
-                'repeatPassword' => 'joebloggs12345'
-            )
-        );
     }
 
-    public function testValidatorValid()
+    public function testValidStringLength()
     {
-        $this->assertTrue($this->validator->isValid('joebloggs12345'));
+        $validator = new StringLength(1,4);
+        $this->assertTrue($validator->isValid('a'));
+        $this->assertTrue($validator->isValid('ab'));
+        $this->assertTrue($validator->isValid('abc'));
+        $this->assertTrue($validator->isValid('abcd'));
     }
 
-    public function testValidatorInvalid()
+    public function testInvalidStringLength()
     {
-        $this->assertFalse($this->validator->isValid('thisisnotthesame'));
+        $validator = new StringLength(1,4);
+        $this->assertFalse($validator->isValid(''));
+        $this->assertFalse($validator->isValid('abcde'));
     }
 
-    public function testValidatorVariableTypesWork()
+    public function testValidStringLengthNullMaximum()
     {
-        $this->assertFalse($this->validator->isValid(0));
-        $this->validator->setData(
-            array(
-                'repeatPassword' => '0'
-            )
-        );
-        $this->assertFalse($this->validator->isValid(0));
-        $this->assertTrue($this->validator->isValid('0'));
+        $validator = new StringLength(1);
+        $this->assertTrue($validator->isValid('a'));
+        $this->assertTrue($validator->isValid('ab'));
+        $this->assertTrue($validator->isValid('abc'));
+        $this->assertTrue($validator->isValid('abcd'));
+    }
+
+    public function testInvalidStringLengthNullMaximum()
+    {
+        $validator = new StringLength(1);
+        $this->assertFalse($validator->isValid(''));
+    }
+
+    public function testNonStrings()
+    {
+        $validator = new StringLength(1, 2);
+        $this->assertFalse($validator->isValid(900));
+        $this->assertTrue($validator->isValid(0));
+        $this->assertFalse($validator->isValid(array('this' => 'is not valid')));
     }
 }

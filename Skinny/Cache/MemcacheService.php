@@ -72,7 +72,9 @@ class MemcacheService implements Cache
             $this->memcache = new \Memcache($host, $port, $timeout);
             $this->connected = $this->memcache->connect($host);
         } else {
+            // @codeCoverageIgnoreStart
             $this->connected = false;
+            // @codeCoverageIgnoreEnd
         }
     }
 

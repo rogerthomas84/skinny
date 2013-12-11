@@ -6,7 +6,7 @@
  * @copyright   2013 Roger Thomas
  * @link        http://www.rogerethomas.com
  * @license     http://www.rogerethomas.com/license
- * @since       2.0
+ * @since       2.0.4
  * @package     Skinny
  *
  * MIT LICENSE
@@ -35,46 +35,72 @@ namespace Skinny\Validate;
 use Skinny\Validate\AbstractValidator;
 
 /**
- * TwoKeysAreEqual
+ * StringLength
  *
- * Validates a given value matches a key from an array
+ * Validates a string is of a given length
  *
  * @package Skinny
  * @author  Roger Thomas <roger.thomas@rogerethomas.com>
  */
-class TwoKeysAreEqual extends AbstractValidator {
+class StringLength extends AbstractValidator {
 
     /**
      * @var string
      */
-    public $errorMessage = '%s is not the same.';
+    public $errorMessage = '%s is not valid';
 
     /**
-     * @var string
+     * @var integer
      */
-    public $mustMatchKey = null;
+    public $minimum = 0;
 
     /**
-     * Construct, giving the key name of the data that this must match.
-     * @param string $mustMatchKey
+     * @var integer|null
      */
-    public function __construct($mustMatchKey)
+    public $maximum = null;
+
+    /**
+     * Specify the minimum and maximum string lengths
+     * @param integer $minimum
+     * @param integer|null $maximum
+     */
+    public function __construct($minimum, $maximum = null)
     {
-        $this->mustMatchKey = $mustMatchKey;
+        if ($maximum == null) {
+            $this->errorMessage = '%s must be at least ' . $minimum . ' characters in length';
+        } else {
+            $this->errorMessage = '%s must be between ' . $minimum . '  and ' . $maximum . ' characters in length';
+        }
+
+        $this->maximum = $maximum;
+        $this->minimum = $minimum;
     }
 
     /**
-     * Ensure a value matches the a specified key in the array
-     * of data.
-     * @param mixed $value
+     * Ensure a string is between a given length
+     * @param string|integer $value
      * @return boolean
      */
     public function isValid($value)
     {
-        if (array_key_exists($this->mustMatchKey, $this->data)) {
-            if ($this->data[$this->mustMatchKey] === $value) {
+        if (!is_string($value) && !is_integer($value)) {
+            return false;
+        }
+
+        if (is_integer($value)) {
+            $value = (string) $value;
+        }
+
+        $length = mb_strlen($value);
+        if ($this->maximum == null) {
+            if ($length >= $this->minimum) {
                 return true;
             }
+            return false;
+        }
+
+        if ($length >= $this->minimum && $length <= $this->maximum) {
+            return true;
         }
 
         return false;

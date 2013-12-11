@@ -6,7 +6,7 @@
  * @copyright   2013 Roger Thomas
  * @link        http://www.rogerethomas.com
  * @license     http://www.rogerethomas.com/license
- * @version     2.0.3
+ * @since       2.0
  * @package     Skinny
  *
  * MIT LICENSE
@@ -76,7 +76,9 @@ class Storage {
     public function __construct($name = 'Default')
     {
         if (headers_sent($filename, $linenum)) {
+            // @codeCoverageIgnoreStart
             throw new \Exception('Headers already sent in ' . $filename . '::' . $linenum);
+            // @codeCoverageIgnoreEnd
         } else {
             if ($name === '') {
                 throw new \Exception('Namespace name cannot be empty');
