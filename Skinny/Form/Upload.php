@@ -219,16 +219,20 @@ class Upload {
 
                     $testPath = $this->targetLocationFolder . DIRECTORY_SEPARATOR . $fileName;
 
+                    // @codeCoverageIgnoreStart
                     if (file_exists($testPath)) {
                         $fp = explode('.', $originalFileName);
                         $fp[0] = substr(md5($originalFileName . uniqid()), 0, 16);
                         $fileName = implode('.', $fp);
                         $testPath = $this->targetLocationFolder . DIRECTORY_SEPARATOR . $fileName;
                     }
+                    // @codeCoverageIgnoreEnd
 
                     if (file_exists($testPath)) {
+                        // @codeCoverageIgnoreStart
                         $this->error = "This file already exists";
                         return false;
+                        // @codeCoverageIgnoreEnd
                     } else {
                         if (!empty($this->validators)) {
                             foreach ($this->validators as $validator) {
@@ -237,13 +241,18 @@ class Upload {
                                     if (property_exists($validator, 'errorMessage')) {
                                         $this->error = $validator->errorMessage;
                                     } else {
+                                        // @codeCoverageIgnoreStart
                                         $this->error = "Invalid file selected";
+                                        // @codeCoverageIgnoreEnd
                                     }
                                     return false;
                                 }
+                                // @codeCoverageIgnoreStart
                             }
                         }
+                        // @codeCoverageIgnoreEnd
                         if (@move_uploaded_file($file["tmp_name"], $testPath)) {
+                            // @codeCoverageIgnoreStart
                             if (file_exists($testPath)) {
                                 $this->originalName = $originalFileName;
                                 $this->finalLocation = $testPath;
@@ -257,6 +266,7 @@ class Upload {
                                 $this->error = "An unknown error occurred while uploading the file.";
                             }
                         } else {
+                            // @codeCoverageIgnoreEnd
                             $this->error = "An unknown error occurred while uploading the file.";
                         }
                     }
@@ -299,8 +309,9 @@ class Upload {
         if (null === $this->finalLocation) {
             return false;
         }
-
+        // @codeCoverageIgnoreStart
         return $this->finalLocation;
+        // @codeCoverageIgnoreEnd
     }
 
     /**
@@ -313,8 +324,9 @@ class Upload {
         if (null === $this->originalName) {
             return false;
         }
-
+        // @codeCoverageIgnoreStart
         return $this->originalName;
+        // @codeCoverageIgnoreEnd
     }
 
     /**
@@ -327,7 +339,8 @@ class Upload {
         if (null === $this->finalName) {
             return false;
         }
-
+        // @codeCoverageIgnoreStart
         return $this->finalName;
+        // @codeCoverageIgnoreEnd
     }
 }

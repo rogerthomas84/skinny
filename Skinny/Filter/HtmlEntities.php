@@ -195,6 +195,7 @@ class HtmlEntities {
     {
         $filtered = htmlentities((string) $value, $this->getQuoteStyle(), $this->getEncoding(), $this->getDoubleQuote());
         if (strlen((string) $value) && !strlen($filtered)) {
+            // @codeCoverageIgnoreStart
             if (!function_exists('iconv')) {
                 throw new \Skinny\Exception('Encoding mismatch has resulted in htmlentities errors');
             }
@@ -205,6 +206,7 @@ class HtmlEntities {
                 throw new \Skinny\Exception('Encoding mismatch has resulted in htmlentities errors');
             }
         }
+        // @codeCoverageIgnoreEnd
         return $filtered;
     }
 }

@@ -66,7 +66,9 @@ class Session {
     final protected function __construct()
     {
         if (headers_sent($filename, $linenum)) {
+            // @codeCoverageIgnoreStart
             throw new \Exception('Headers already sent in ' . $filename . '::' . $linenum);
+            // @codeCoverageIgnoreEnd
         } else {
             $this->setup();
         }
