@@ -33,6 +33,12 @@ ob_start();
  */
 $dir = realpath(__DIR__ . '/../../');
 
+$baseDirectory = realpath(dirname(__FILE__) . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR .'..' . DIRECTORY_SEPARATOR);
+$phpDoc  = 'php ' . $baseDirectory . '/phpDocumentor.phar run -d ';
+$phpDoc .= rtrim($baseDirectory, DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR . 'Skinny' . DIRECTORY_SEPARATOR;
+$phpDoc .= ' -t ' . rtrim($baseDirectory, DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR . 'build' . DIRECTORY_SEPARATOR . 'phpDoc';
+@exec($phpDoc);
+
 spl_autoload_register(
     function($class)
     {
