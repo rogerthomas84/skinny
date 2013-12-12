@@ -6,7 +6,7 @@
  * @copyright   2013 Roger Thomas
  * @link        http://www.rogerethomas.com
  * @license     http://www.rogerethomas.com/license
- * @since       2.0
+ * @since       2.0.6
  * @package     Skinny
  *
  * MIT LICENSE
