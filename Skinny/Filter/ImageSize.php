@@ -179,7 +179,9 @@ class ImageSize {
             imagesy($this->file)
         );
         if (!$status) {
+            // @codeCoverageIgnoreStart
             throw new \Skinny\Exception('Image creation failed.');
+            // @codeCoverageIgnoreEnd
         }
         $this->file = $blank;
     }

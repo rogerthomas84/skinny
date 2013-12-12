@@ -36,20 +36,45 @@ use Skinny\Filter\ImageSize;
 
 class ImageSizeTest extends \PHPUnit_Framework_TestCase
 {
-    private $path = null;
+    private $jpgPath = null;
+    private $pngPath = null;
+    private $gifPath = null;
 
     public function setUp()
     {
+        $path = sys_get_temp_dir();
+
         $im = imagecreatetruecolor(120, 20);
         $text_color = imagecolorallocate($im, 233, 14, 91);
         imagestring($im, 1, 5, 5,  'A Simple Text String', $text_color);
-        $path = sys_get_temp_dir();
-        $this->path = $path . DIRECTORY_SEPARATOR . implode('_', explode('\\', __CLASS__)) . '.jpg';
-        if (file_exists($this->path)) {
-            @unlink($this->path);
+        $this->jpgPath = $path . DIRECTORY_SEPARATOR . implode('_', explode('\\', __CLASS__)) . '.jpg';
+        if (file_exists($this->jpgPath)) {
+            @unlink($this->jpgPath);
         }
-        imagejpeg($im, $this->path);
+        imagejpeg($im, $this->jpgPath);
         imagedestroy($im);
+
+        // Make PNG
+        $this->pngPath = $path . DIRECTORY_SEPARATOR . implode('_', explode('\\', __CLASS__)) . '.png';
+        if (file_exists($this->pngPath)) {
+            @unlink($this->pngPath);
+        }
+        $png = imagecreatetruecolor(100,100);
+        imagesavealpha($png, true);
+        $pngColour = imagecolorallocatealpha($png, 0x00, 0x00, 0x00, 127);
+        imagefill($png, 0, 0, $pngColour);
+        imagepng($png, $this->pngPath);
+        imagedestroy($png);
+
+        // Make Gif
+        $this->gifPath = $path . DIRECTORY_SEPARATOR . implode('_', explode('\\', __CLASS__)) . '.gif';
+        if (file_exists($this->gifPath)) {
+            @unlink($this->gifPath);
+        }
+        $gif = imagecreatetruecolor(100, 100);
+        imagefilledrectangle($gif, 0, 0, 99, 99, 0xFFFFFF);
+        imagegif($gif, $this->gifPath);
+        imagedestroy($gif);
     }
 
     public function testInvalidConstruct()
@@ -65,37 +90,85 @@ class ImageSizeTest extends \PHPUnit_Framework_TestCase
 
     public function testInit()
     {
-        $filter = new ImageSize($this->path);
-        $this->assertGreaterThan(1, $filter->getFileInfo());
+        $filterJpg = new ImageSize($this->jpgPath);
+        $this->assertGreaterThan(1, $filterJpg->getFileInfo());
+
+        $filterPng = new ImageSize($this->pngPath);
+        $this->assertGreaterThan(1, $filterPng->getFileInfo());
+
+        $filterGif = new ImageSize($this->gifPath);
+        $this->assertGreaterThan(1, $filterGif->getFileInfo());
     }
 
     public function testWidth()
     {
-        $filter = new ImageSize($this->path);
-        $filter->toWidth(10);
-        $file = sys_get_temp_dir() . DIRECTORY_SEPARATOR . implode('_', explode('\\', __CLASS__));
-        $filter->setOutput($file);
-        $this->assertFileExists($file);
-        @unlink($file);
+        $filterJpg = new ImageSize($this->jpgPath);
+        $filterJpg->toWidth(10);
+        $fileJpg = sys_get_temp_dir() . DIRECTORY_SEPARATOR . implode('_', explode('\\', __CLASS__));
+        $filterJpg->setOutput($fileJpg, 60, '777');
+        $this->assertFileExists($fileJpg);
+        @unlink($fileJpg);
+
+        $filterPng = new ImageSize($this->pngPath);
+        $filterPng->toWidth(10);
+        $filePng = sys_get_temp_dir() . DIRECTORY_SEPARATOR . implode('_', explode('\\', __CLASS__));
+        $filterPng->setOutput($filePng, 60, '777');
+        $this->assertFileExists($filePng);
+        @unlink($filePng);
+
+        $filterGif = new ImageSize($this->gifPath);
+        $filterGif->toWidth(10);
+        $fileGif = sys_get_temp_dir() . DIRECTORY_SEPARATOR . implode('_', explode('\\', __CLASS__));
+        $filterGif->setOutput($fileGif, 60, '777');
+        $this->assertFileExists($fileGif);
+        @unlink($fileGif);
     }
 
     public function testHeight()
     {
-        $filter = new ImageSize($this->path);
-        $filter->toHeight(10);
-        $file = sys_get_temp_dir() . DIRECTORY_SEPARATOR . implode('_', explode('\\', __CLASS__));
-        $filter->setOutput($file);
-        $this->assertFileExists($file);
-        @unlink($file);
+        $filterJpg = new ImageSize($this->jpgPath);
+        $filterJpg->toHeight(10);
+        $fileJpg = sys_get_temp_dir() . DIRECTORY_SEPARATOR . implode('_', explode('\\', __CLASS__));
+        $filterJpg->setOutput($fileJpg);
+        $this->assertFileExists($fileJpg);
+        @unlink($fileJpg);
+
+        $filterPng = new ImageSize($this->pngPath);
+        $filterPng->toHeight(10);
+        $filePng = sys_get_temp_dir() . DIRECTORY_SEPARATOR . implode('_', explode('\\', __CLASS__));
+        $filterPng->setOutput($filePng);
+        $this->assertFileExists($filePng);
+        @unlink($filePng);
+
+        $filterGif = new ImageSize($this->gifPath);
+        $filterGif->toHeight(10);
+        $fileGif = sys_get_temp_dir() . DIRECTORY_SEPARATOR . implode('_', explode('\\', __CLASS__));
+        $filterGif->setOutput($fileGif);
+        $this->assertFileExists($fileGif);
+        @unlink($fileGif);
     }
 
     public function testPercentage()
     {
-        $filter = new ImageSize($this->path);
-        $filter->toPercentage(50);
-        $file = sys_get_temp_dir() . DIRECTORY_SEPARATOR . implode('_', explode('\\', __CLASS__));
-        $filter->setOutput($file);
-        $this->assertFileExists($file);
-        @unlink($file);
+        $filterJpg = new ImageSize($this->jpgPath);
+        $filterJpg->toPercentage(10);
+        $fileJpg = sys_get_temp_dir() . DIRECTORY_SEPARATOR . implode('_', explode('\\', __CLASS__));
+        $filterJpg->setOutput($fileJpg);
+        $this->assertFileExists($fileJpg);
+        @unlink($fileJpg);
+
+        $filterPng = new ImageSize($this->pngPath);
+        $filterPng->toPercentage(10);
+        $filePng = sys_get_temp_dir() . DIRECTORY_SEPARATOR . implode('_', explode('\\', __CLASS__));
+        $filterPng->setOutput($filePng);
+        $this->assertFileExists($filePng);
+        @unlink($filePng);
+
+        $filterGif = new ImageSize($this->gifPath);
+        $filterGif->toPercentage(10);
+        $fileGif = sys_get_temp_dir() . DIRECTORY_SEPARATOR . implode('_', explode('\\', __CLASS__));
+        $filterGif->setOutput($fileGif);
+        $this->assertFileExists($fileGif);
+        @unlink($fileGif);
     }
 }
