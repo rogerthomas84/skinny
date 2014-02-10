@@ -62,4 +62,16 @@ class SessionTestBase extends \PHPUnit_Framework_TestCase
         $_SESSION['__Sf_pr'] = array('store' => array(), 'locks' => array('__Sf_Auth' => array()));
         $_SESSION['__Sf_pb']['store']['__Sf_Auth'] = array('identity' => array('name' => 'Joe Bloggs', 'age' => 30), 'roles' => array('admin', 'user'));
     }
+
+    /**
+     * @since 2.0.8
+     */
+    protected function initLoggedInSessionInvalidRoles()
+    {
+        $_SESSION['__Sf_pb'] = array('store' => array('__Sf_Auth' => array()), 'locks' => array('__Sf_Auth' => array()));
+        $_SESSION['__Sf_pr'] = array('store' => array(), 'locks' => array('__Sf_Auth' => array()));
+        $_SESSION['__Sf_pb']['store']['__Sf_Auth'] = array('identity' => array('name' => 'Joe Bloggs', 'age' => 30), 'roles' => new \stdClass());
+    }
+
+
 }

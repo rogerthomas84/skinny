@@ -192,16 +192,29 @@ class Auth {
     /**
      * Check if a user has a given role
      *
-     * @param string $role
+     * @since 2.0.8
+     * @param string|array $mixed
      * @return boolean
      */
-    public function hasRole($role)
+    public function hasRole($mixed)
     {
         if ($this->instance instanceof \Skinny\Storage) {
             $roles = $this->instance->get('roles');
-            if (is_array($roles) && in_array($role, $roles)) {
+            if (!is_array($roles)) {
+                return false;
+            }
+
+            if (!is_array($mixed) && (is_string($mixed) || is_integer($mixed)) && in_array($mixed, $roles)) {
                 return true;
             }
+
+            if (is_array($mixed)) {
+                foreach ($mixed as $potential) {
+                    if (in_array($potential, $roles)) {
+                        return true;
+                    }
+                }
+            } // @codeCoverageIgnore
         }
 
         return false;

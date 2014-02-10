@@ -73,6 +73,42 @@ class AuthTest extends SessionTestBase
         $this->assertTrue(Auth::getInstance()->hasRole('admin'));
     }
 
+    /**
+     * @since 2.0.8
+     */
+    public function testInvalidRoles()
+    {
+        $this->initLoggedInSessionInvalidRoles();
+        $this->assertFalse(Auth::getInstance()->hasRole(array('foo', 'admin')));
+    }
+
+    /**
+     * @since 2.0.8
+     */
+    public function testInvalidRolesTwo()
+    {
+        $this->initLoggedInSessionInvalidRoles();
+        $this->assertFalse(Auth::getInstance()->hasRole(new \stdClass()));
+    }
+
+    /**
+     * @since 2.0.8
+     */
+    public function testDoesHaveARoleOfArray()
+    {
+        $this->initLoggedInSession();
+        $this->assertTrue(Auth::getInstance()->hasRole(array('foo', 'admin')));
+    }
+
+    /**
+     * @since 2.0.8
+     */
+    public function testDoesHaveARoleOfInvalidParameter()
+    {
+        $this->initLoggedInSession();
+        $this->assertFalse(Auth::getInstance()->hasRole(new \stdClass()));
+    }
+
     public function testTwoRoles()
     {
         $this->initLoggedInSession();
