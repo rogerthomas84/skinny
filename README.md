@@ -1,4 +1,4 @@
-![Travis](https://travis-ci.org/rogerthomas84/skinny.png)
+[![Build Status](https://travis-ci.org/rogerthomas84/skinny.png)](http://travis-ci.org/rogerthomas84/skinny)
 
 Skinny PHP Library
 ==================
