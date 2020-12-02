@@ -11,7 +11,10 @@
         }
     ],
     "require": {
-        "php": ">=7.0.0"
+        "php": ">=7.0.0",
+        "ext-iconv": "*",
+        "ext-gd": "*",
+        "ext-mbstring": "*"
     },
     "autoload": {
         "psr-0": { "Skinny": "src" }

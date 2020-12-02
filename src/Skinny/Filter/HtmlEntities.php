@@ -30,7 +30,10 @@
  * OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
+
 namespace Skinny\Filter;
+
+use Skinny\BaseException;
 
 /**
  * HtmlEntities
@@ -42,8 +45,8 @@ namespace Skinny\Filter;
  * @author  Roger Thomas <roger.thomas@rogerethomas.com>
  *
  */
-class HtmlEntities {
-
+class HtmlEntities
+{
     /**
      * Corresponds to the second htmlentities() argument
      *
@@ -68,9 +71,7 @@ class HtmlEntities {
     /**
      * Sets filter options
      *
-     * @param  array $quoteStyle
-     * @param  string  $charSet
-     * @return void
+     * @param array $options
      */
     public function __construct($options = array())
     {
@@ -105,8 +106,8 @@ class HtmlEntities {
     /**
      * Sets the quoteStyle option
      *
-     * @param  integer $quoteStyle
-     * @return \Skinny\Filter\HtmlEntities Provides a fluent interface
+     * @param integer $quoteStyle
+     * @return HtmlEntities Provides a fluent interface
      */
     public function setQuoteStyle($quoteStyle)
     {
@@ -122,18 +123,18 @@ class HtmlEntities {
      */
     public function getEncoding()
     {
-         return $this->_encoding;
+        return $this->_encoding;
     }
 
     /**
      * Set encoding
      *
-     * @param  string $value
-     * @return \Skinny\Filter\HtmlEntities
+     * @param string $value
+     * @return HtmlEntities
      */
     public function setEncoding($value)
     {
-        $this->_encoding = (string) $value;
+        $this->_encoding = (string)$value;
         return $this;
     }
 
@@ -154,8 +155,8 @@ class HtmlEntities {
      *
      * Proxies to {@link setEncoding()}
      *
-     * @param  string $charSet
-     * @return \Skinny\Filter\HtmlEntities
+     * @param string $charSet
+     * @return HtmlEntities
      */
     public function setCharSet($charSet)
     {
@@ -176,11 +177,11 @@ class HtmlEntities {
      * Sets the doubleQuote option
      *
      * @param boolean $doubleQuote
-     * @return \Skinny\Filter\HtmlEntities
+     * @return HtmlEntities
      */
     public function setDoubleQuote($doubleQuote)
     {
-        $this->_doubleQuote = (boolean) $doubleQuote;
+        $this->_doubleQuote = (boolean)$doubleQuote;
         return $this;
     }
 
@@ -188,22 +189,23 @@ class HtmlEntities {
      * Returns the string $value, converting characters to their corresponding HTML entity
      * equivalents where they exist
      *
-     * @param  string $value
+     * @param string $value
      * @return string
+     * @throws BaseException
      */
     public function filter($value)
     {
-        $filtered = htmlentities((string) $value, $this->getQuoteStyle(), $this->getEncoding(), $this->getDoubleQuote());
-        if (strlen((string) $value) && !strlen($filtered)) {
+        $filtered = htmlentities((string)$value, $this->getQuoteStyle(), $this->getEncoding(), $this->getDoubleQuote());
+        if (strlen((string)$value) && !strlen($filtered)) {
             // @codeCoverageIgnoreStart
             if (!function_exists('iconv')) {
-                throw new \Skinny\Exception('Encoding mismatch has resulted in htmlentities errors');
+                throw new BaseException('Encoding mismatch has resulted in htmlentities errors');
             }
-            $enc      = $this->getEncoding();
-            $value    = iconv('', $enc . '//IGNORE', (string) $value);
+            $enc = $this->getEncoding();
+            $value = iconv('', $enc . '//IGNORE', (string)$value);
             $filtered = htmlentities($value, $this->getQuoteStyle(), $enc, $this->getDoubleQuote());
             if (!strlen($filtered)) {
-                throw new \Skinny\Exception('Encoding mismatch has resulted in htmlentities errors');
+                throw new BaseException('Encoding mismatch has resulted in htmlentities errors');
             }
         }
         // @codeCoverageIgnoreEnd

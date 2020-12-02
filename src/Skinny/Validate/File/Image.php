@@ -30,6 +30,7 @@
  * OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
+
 namespace Skinny\Validate\File;
 
 use Skinny\Validate\AbstractValidator;
@@ -42,13 +43,16 @@ use Skinny\Validate\AbstractValidator;
  * @package Skinny
  * @author  Roger Thomas <roger.thomas@rogerethomas.com>
  */
-class Image extends AbstractValidator {
-
+class Image extends AbstractValidator
+{
     /**
      * @var string
      */
     public $errorMessage = '%s is not a valid image.';
 
+    /**
+     * Image constructor.
+     */
     public function __construct()
     {
     }

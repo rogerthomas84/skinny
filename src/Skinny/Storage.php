@@ -30,6 +30,7 @@
  * OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
+
 namespace Skinny;
 
 /**
@@ -44,8 +45,8 @@ namespace Skinny;
  * @package Skinny
  * @author  Roger Thomas <roger.thomas@rogerethomas.com>
  */
-class Storage {
-
+class Storage
+{
     /**
      * Name of the secret storage within the session
      *
@@ -71,21 +72,21 @@ class Storage {
      * Initiate a new or existing namespace
      *
      * @param string $name defaults to 'Default'
-     * @throws \Exception
+     * @throws BaseException
      */
     public function __construct($name = 'Default')
     {
         if (headers_sent($filename, $linenum)) {
             // @codeCoverageIgnoreStart
-            throw new \Exception('Headers already sent in ' . $filename . '::' . $linenum);
+            throw new BaseException('Headers already sent in ' . $filename . '::' . $linenum);
             // @codeCoverageIgnoreEnd
         } else {
             if ($name === '') {
-                throw new \Exception('Namespace name cannot be empty');
+                throw new BaseException('Namespace name cannot be empty');
             } else if ($name[0] == "_" && substr($name, 0, 5) != "__Sf_") {
-                throw new \Exception('Namespace name cannot start with an underscore.');
+                throw new BaseException('Namespace name cannot start with an underscore.');
             } else if (preg_match('#(^[0-9])#i', $name[0])) {
-                throw new \Exception('Namespace name cannot start with a number');
+                throw new BaseException('Namespace name cannot start with a number');
             } else {
                 $this->_namespaceName = $name;
                 @session_start();
@@ -98,7 +99,7 @@ class Storage {
      * Lock the namespace, this will prevent removal of keys
      *
      * @return boolean
-     * @throws \Exception
+     * @throws BaseException
      */
     public function lock()
     {
@@ -111,7 +112,7 @@ class Storage {
      * Unlock the namespace, this will allow removal of keys
      *
      * @return boolean
-     * @throws \Exception
+     * @throws BaseException
      */
     public function unlock()
     {
@@ -124,7 +125,7 @@ class Storage {
      * Check if a namespace is currently locked.
      *
      * @return boolean
-     * @throws \Exception
+     * @throws BaseException
      */
     public function isLocked()
     {
@@ -141,7 +142,7 @@ class Storage {
      * @param string $name
      * @param mixed $value
      * @return boolean result of save
-     * @throws \Exception
+     * @throws BaseException
      */
     public function set($name, $value)
     {
@@ -157,7 +158,7 @@ class Storage {
      *
      * @param string $name
      * @return mixed
-     * @throws \Exception
+     * @throws BaseException
      */
     public function get($name)
     {
@@ -171,8 +172,8 @@ class Storage {
     /**
      * Retrieve the entire namespace
      *
-     * @return array success | boolean false failure
-     * @throws \Exception
+     * @return array|false
+     * @throws BaseException
      */
     public function getAll()
     {
@@ -188,7 +189,7 @@ class Storage {
      *
      * @param string $name
      * @return boolean result of removal
-     * @throws \Exception
+     * @throws BaseException
      */
     public function remove($name)
     {
@@ -207,7 +208,7 @@ class Storage {
      * Clear all values currently held in this namespace
      *
      * @return boolean status of removal
-     * @throws \Exception
+     * @throws BaseException
      */
     public function removeAll()
     {
@@ -224,7 +225,7 @@ class Storage {
      * the namespace will no longer be held in session
      *
      * @return boolean
-     * @throws \Exception
+     * @throws BaseException
      */
     public function destroy()
     {
@@ -277,12 +278,12 @@ class Storage {
     /**
      * Validate if a session exists.
      *
-     * @throws \Exception
+     * @throws BaseException
      */
     protected function _validate()
     {
         if (!isset($_SESSION)) {
-            throw new \Exception('Session may not be started.');
+            throw new BaseException('Session may not be started.');
         }
         return;
     }

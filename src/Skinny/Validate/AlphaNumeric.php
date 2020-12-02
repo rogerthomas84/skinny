@@ -30,9 +30,8 @@
  * OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-namespace Skinny\Validate;
 
-use Skinny\Validate\AbstractValidator;
+namespace Skinny\Validate;
 
 /**
  * AlphaNumeric
@@ -42,17 +41,17 @@ use Skinny\Validate\AbstractValidator;
  * @package Skinny
  * @author  Roger Thomas <roger.thomas@rogerethomas.com>
  */
-class AlphaNumeric extends AbstractValidator {
-
+class AlphaNumeric extends AbstractValidator
+{
     /**
      * @var string
      */
     public $errorMessage = '%s must only contain letters and numbers.';
 
     /**
-     * @var boolean
+     * @var bool
      */
-    private $allowSpaces = false;
+    private $allowSpaces;
 
     /**
      * Construct, giving the $allowSpaces parameter to indicate

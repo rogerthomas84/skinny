@@ -32,6 +32,10 @@
  */
 namespace Skinny;
 
+/**
+ * Interface Cache
+ * @package Skinny
+ */
 interface Cache
 {
     /**

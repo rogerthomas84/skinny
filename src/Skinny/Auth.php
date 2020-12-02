@@ -30,6 +30,7 @@
  * OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
+
 namespace Skinny;
 
 /**
@@ -44,17 +45,17 @@ namespace Skinny;
  * @package Skinny
  * @author  Roger Thomas <roger.thomas@rogerethomas.com>
  */
-class Auth {
-
+class Auth
+{
     /**
      * Instance of this class
      *
-     * @var \Skinny\Auth
+     * @var Auth
      */
     protected static $_instance = null;
 
     /**
-     * @var \Skinny\Storage
+     * @var Storage
      */
     private $instance = false;
 
@@ -71,7 +72,7 @@ class Auth {
     /**
      * Retrieve an instance of \Skinny\Auth
      *
-     * @return \Skinny\Auth
+     * @return Auth
      */
     public static function getInstance()
     {
@@ -89,7 +90,7 @@ class Auth {
      */
     public function setRoles(array $roles = array())
     {
-        if ($this->instance instanceof \Skinny\Storage) {
+        if ($this->instance instanceof Storage) {
             if ($this->instance->isLocked()) {
                 $this->instance->unlock();
             }
@@ -110,7 +111,7 @@ class Auth {
      */
     public function addToIdentity($array)
     {
-        if ($this->instance instanceof \Skinny\Storage) {
+        if ($this->instance instanceof Storage) {
             if ($this->instance->isLocked()) {
                 $this->instance->unlock();
             }
@@ -135,7 +136,7 @@ class Auth {
      */
     public function addRole($role)
     {
-        if ($this->instance instanceof \Skinny\Storage) {
+        if ($this->instance instanceof Storage) {
             if ($this->hasRole($role)) {
                 return true;
             }
@@ -164,7 +165,7 @@ class Auth {
      */
     public function removeRole($role)
     {
-        if ($this->instance instanceof \Skinny\Storage) {
+        if ($this->instance instanceof Storage) {
             if (!$this->hasRole($role)) {
                 return false;
             }
@@ -192,13 +193,13 @@ class Auth {
     /**
      * Check if a user has a given role
      *
-     * @since 2.0.8
      * @param string|array $mixed
      * @return boolean
+     * @since 2.0.8
      */
     public function hasRole($mixed)
     {
-        if ($this->instance instanceof \Skinny\Storage) {
+        if ($this->instance instanceof Storage) {
             $roles = $this->instance->get('roles');
             if (!is_array($roles)) {
                 return false;
@@ -228,7 +229,7 @@ class Auth {
      */
     public function login(array $identity = array())
     {
-        if ($this->instance instanceof \Skinny\Storage) {
+        if ($this->instance instanceof Storage) {
             if ($this->instance->isLocked()) {
                 $this->instance->unlock();
             }
@@ -244,8 +245,8 @@ class Auth {
     /**
      * Retrieve the users identity as set by login
      *
-     * @see \Skinny\Auth::login
      * @return array|boolean false for no identity
+     * @see \Skinny\Auth::login
      */
     public function getIdentity()
     {
@@ -277,7 +278,7 @@ class Auth {
      */
     public function isLoggedIn()
     {
-        if ($this->instance instanceof \Skinny\Storage) {
+        if ($this->instance instanceof Storage) {
             if ($this->instance->get('identity') != false) {
                 return true;
             }
@@ -293,7 +294,7 @@ class Auth {
      */
     public function logout()
     {
-        if ($this->instance instanceof \Skinny\Storage) {
+        if ($this->instance instanceof Storage) {
             if ($this->instance->isLocked()) {
                 $this->instance->unlock();
             }
@@ -305,11 +306,11 @@ class Auth {
 
     /**
      * Get the storage object
-     * @return \Skinny\Storage|boolean false
+     * @return Storage|boolean false
      */
     public function getStorage()
     {
-        if ($this->instance instanceof \Skinny\Storage) {
+        if ($this->instance instanceof Storage) {
             return $this->instance;
         }
 
@@ -321,7 +322,7 @@ class Auth {
      */
     public function destroy()
     {
-        if ($this->instance instanceof \Skinny\Storage) {
+        if ($this->instance instanceof Storage) {
             $this->instance->destroy();
         }
         $this->instance = null;
@@ -332,7 +333,7 @@ class Auth {
      */
     public function setup()
     {
-        $this->instance = new \Skinny\Storage('__Sf_Auth');
+        $this->instance = new Storage('__Sf_Auth');
         $this->instance->lock();
     }
 }

@@ -32,7 +32,7 @@
  */
 namespace Skinny;
 
-use Skinny\Exception;
+use Skinny\BaseException;
 
 /**
  * Router
@@ -114,8 +114,8 @@ class Router
 
     /**
      * Retrieve the matching route from the parameters given.
-     * @throws Exception
      * @return array (or throws Exception)
+     * @throws BaseException
      */
 	public function getRoute()
     {
@@ -142,7 +142,7 @@ class Router
             }
         }
 
-        throw new Exception('Route for path not found.');
+        throw new BaseException('Route for path not found.');
     }
 
     /**

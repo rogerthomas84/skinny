@@ -32,11 +32,14 @@
  */
 namespace Skinny\Auth\Exception;
 
+use Skinny\BaseException;
+
 /**
  * \Skinny\Auth\Exception\UnrecognisedAuthenticationResultException
  *
  * @package Skinny
  * @author  Roger Thomas <roger.thomas@rogerethomas.com>
  */
-class UnrecognisedAuthenticationResultException extends \Exception
-{}
+class UnrecognisedAuthenticationResultException extends BaseException
+{
+}

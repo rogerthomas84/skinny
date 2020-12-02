@@ -30,9 +30,8 @@
  * OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-namespace Skinny\Validate;
 
-use Skinny\Validate\AbstractValidator;
+namespace Skinny\Validate;
 
 /**
  * StringLength
@@ -42,8 +41,8 @@ use Skinny\Validate\AbstractValidator;
  * @package Skinny
  * @author  Roger Thomas <roger.thomas@rogerethomas.com>
  */
-class StringLength extends AbstractValidator {
-
+class StringLength extends AbstractValidator
+{
     /**
      * @var string
      */
@@ -88,7 +87,7 @@ class StringLength extends AbstractValidator {
         }
 
         if (is_integer($value)) {
-            $value = (string) $value;
+            $value = (string)$value;
         }
 
         $length = mb_strlen($value);

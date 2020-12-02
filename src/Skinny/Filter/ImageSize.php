@@ -30,7 +30,10 @@
  * OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
+
 namespace Skinny\Filter;
+
+use Skinny\BaseException;
 
 /**
  * ImageSize
@@ -41,8 +44,8 @@ namespace Skinny\Filter;
  * @package Skinny
  * @author  Roger Thomas <roger.thomas@rogerethomas.com>
  */
-class ImageSize {
-
+class ImageSize
+{
     /**
      * Holds the data of the image.
      * @var string
@@ -60,27 +63,28 @@ class ImageSize {
      * @var array
      */
     private $fileInfo = array(
-        0=>0,
-        1=>0
+        0 => 0,
+        1 => 0
     );
 
     /**
      * Construct giving a filename
      *
      * @param string $filename
+     * @throws BaseException
      */
     public function __construct($filename)
     {
         $this->fileInfo = getimagesize($filename);
         if (!is_array($this->fileInfo)) {
-            throw new \Skinny\Exception('Invalid image file provided ' . $filename);
+            throw new BaseException('Invalid image file provided ' . $filename);
         }
         $this->type = $this->fileInfo[2];
-        if($this->type == IMAGETYPE_PNG) {
+        if ($this->type == IMAGETYPE_PNG) {
             $this->file = imagecreatefrompng($filename);
-        } elseif($this->type == IMAGETYPE_GIF) {
+        } elseif ($this->type == IMAGETYPE_GIF) {
             $this->file = imagecreatefromgif($filename);
-        } elseif($this->type == IMAGETYPE_JPEG) {
+        } elseif ($this->type == IMAGETYPE_JPEG) {
             $this->file = imagecreatefromjpeg($filename);
         }
     }
@@ -98,21 +102,21 @@ class ImageSize {
      * Give the target details for the output.
      *
      * @param string $filename
-     * @param int $compression = 100
-     * @param int $chmod = null
+     * @param int $compress
+     * @param int|null $chmod
      */
-    public function setOutput($filename, $compress=100, $chmod=null)
+    public function setOutput($filename, $compress = 100, $chmod = null)
     {
-        if($this->type == IMAGETYPE_PNG) {
-            imagepng($this->file,$filename);
-        } elseif($this->type == IMAGETYPE_GIF) {
-            imagegif($this->file,$filename);
+        if ($this->type == IMAGETYPE_PNG) {
+            imagepng($this->file, $filename);
+        } elseif ($this->type == IMAGETYPE_GIF) {
+            imagegif($this->file, $filename);
         } elseif ($this->type == IMAGETYPE_JPEG) {
-            imagejpeg($this->file,$filename,$compress);
+            imagejpeg($this->file, $filename, $compress);
         }
 
         if ($chmod != null) {
-            chmod($filename,$chmod);
+            chmod($filename, $chmod);
         }
     }
 
@@ -121,12 +125,13 @@ class ImageSize {
      * automatically calculated
      *
      * @param int $height
+     * @throws BaseException
      */
     public function toHeight($height)
     {
         $ratio = $height / imagesy($this->file);
         $width = imagesx($this->file) * $ratio;
-        $this->toDimensions($width,$height);
+        $this->toDimensions($width, $height);
     }
 
     /**
@@ -134,23 +139,25 @@ class ImageSize {
      * automatically calculated
      *
      * @param int $width
+     * @throws BaseException
      */
     public function toWidth($width)
     {
         $ratio = $width / imagesx($this->file);
         $height = imagesy($this->file) * $ratio;
-        $this->toDimensions($width,$height);
+        $this->toDimensions($width, $height);
     }
 
     /**
      * Resize the given image to a percentage of its size.
      *
      * @param int $percent
+     * @throws BaseException
      */
     public function toPercentage($percent)
     {
-        $width = imagesx($this->file) * $percent/100;
-        $height = imagesy($this->file) * $percent/100;
+        $width = imagesx($this->file) * $percent / 100;
+        $height = imagesy($this->file) * $percent / 100;
         $this->toDimensions(
             $width,
             $height
@@ -162,8 +169,9 @@ class ImageSize {
      *
      * @param int $width
      * @param int $height
+     * @throws BaseException
      */
-    public function toDimensions($width,$height)
+    public function toDimensions($width, $height)
     {
         $blank = imagecreatetruecolor($width, $height);
         $status = imagecopyresampled(
@@ -180,7 +188,7 @@ class ImageSize {
         );
         if (!$status) {
             // @codeCoverageIgnoreStart
-            throw new \Skinny\Exception('Image creation failed.');
+            throw new BaseException('Image creation failed.');
             // @codeCoverageIgnoreEnd
         }
         $this->file = $blank;

@@ -36,6 +36,7 @@ use Skinny\Auth\AdapterAbstract;
 use Skinny\Auth\Exception\InvalidCredentialsException;
 use Skinny\Auth\Exception\UnrecognisedAuthenticationResultException;
 use Skinny\Auth;
+
 /**
  * \Skinny\Auth\Service
  *
@@ -74,7 +75,7 @@ class Service
      * Log a user in using the given adapter from the construct
      * @throws InvalidCredentialsException
      * @throws UnrecognisedAuthenticationResultException
-     * @return boolean|throws
+     * @return bool
      */
     public function login()
     {

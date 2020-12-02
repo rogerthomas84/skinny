@@ -32,10 +32,14 @@
  */
 namespace Skinny;
 
+use Exception;
+
 /**
  * Simple Exception Class
  *
  * @package Skinny
  * @author  Roger Thomas <roger.thomas@rogerethomas.com>
  */
-class Exception extends \Exception {}
+class BaseException extends Exception
+{
+}

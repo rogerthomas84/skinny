@@ -32,11 +32,13 @@
  */
 namespace Skinny\Auth\Exception;
 
+use Skinny\BaseException;
+
 /**
  * \Skinny\Auth\Exception\InvalidCredentialsException
  *
  * @package Skinny
  * @author  Roger Thomas <roger.thomas@rogerethomas.com>
  */
-class InvalidCredentialsException extends \Exception
+class InvalidCredentialsException extends BaseException
 {}

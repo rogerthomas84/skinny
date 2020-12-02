@@ -30,7 +30,10 @@
  * OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
+
 namespace Skinny\Form;
+
+use Skinny\Validate\AbstractValidator;
 
 /**
  * Upload
@@ -58,8 +61,8 @@ namespace Skinny\Form;
  * @package Skinny
  * @author  Roger Thomas <roger.thomas@rogerethomas.com>
  */
-class Upload {
-
+class Upload
+{
     /**
      * @var string
      */
@@ -129,7 +132,8 @@ class Upload {
      * Initialise the upload class
      */
     public function __construct()
-    { }
+    {
+    }
 
     /**
      * Set the form field name for the upload
@@ -147,7 +151,7 @@ class Upload {
     public function setTargetFolder($targetLocationFolder)
     {
         if (substr($targetLocationFolder, (strlen($targetLocationFolder) - 1), 1) == '/' || substr($targetLocationFolder, (strlen($targetLocationFolder) - 1), 1) == '\\') {
-            $targetLocationFolder = substr($targetLocationFolder, 0, (strlen($targetLocationFolder) - 1) );
+            $targetLocationFolder = substr($targetLocationFolder, 0, (strlen($targetLocationFolder) - 1));
         }
         $this->targetLocationFolder = $targetLocationFolder;
     }
@@ -185,7 +189,7 @@ class Upload {
                     if ($file["error"] == 0 && $file["size"] == 0) {
                         $file['error'] = 9;
                     }
-                    switch((int)$file["error"]) {
+                    switch ((int)$file["error"]) {
                         case(1):
                             $this->error = "Uploaded file exceeds the maximum size of " . ini_get('upload_max_filesize') . ".";
                             break;
@@ -236,7 +240,7 @@ class Upload {
                     } else {
                         if (!empty($this->validators)) {
                             foreach ($this->validators as $validator) {
-                                /* @var $validator \Skinny\Validate\AbstractValidator */
+                                /* @var $validator AbstractValidator */
                                 if (!$validator->isValid($file["tmp_name"])) {
                                     if (property_exists($validator, 'errorMessage')) {
                                         $this->error = $validator->errorMessage;
@@ -301,8 +305,8 @@ class Upload {
 
     /**
      * Retrieve the final location for the file including path.
-     * @example /var/www/vhosts/mysite/uploads/picture.jpg
      * @return string | boolean false for not valid
+     * @example /var/www/vhosts/mysite/uploads/picture.jpg
      */
     public function getFileLocation()
     {
@@ -316,8 +320,8 @@ class Upload {
 
     /**
      * Retrieve the original file name
-     * @example picture.jpg
      * @return string | boolean false for not valid
+     * @example picture.jpg
      */
     public function getOriginalFileName()
     {
@@ -331,8 +335,8 @@ class Upload {
 
     /**
      * Retrieve the final location for the file including path.
-     * @example picture.jpg
      * @return string | boolean false for not valid
+     * @example picture.jpg
      */
     public function getFileName()
     {

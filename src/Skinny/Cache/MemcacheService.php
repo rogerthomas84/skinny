@@ -32,6 +32,7 @@
  */
 namespace Skinny\Cache;
 
+use Memcache;
 use Skinny\Cache;
 
 class MemcacheService implements Cache
@@ -50,7 +51,7 @@ class MemcacheService implements Cache
 
     /**
      * Instance of Memcache
-     * @var \Memcache
+     * @var Memcache
      */
     private $memcache = null;
 
@@ -69,7 +70,7 @@ class MemcacheService implements Cache
     protected function __construct($host, $port = null, $timeout = null)
     {
         if (class_exists('\Memcache')) {
-            $this->memcache = new \Memcache($host, $port, $timeout);
+            $this->memcache = new Memcache($host, $port, $timeout);
             $this->connected = $this->memcache->connect($host);
         } else {
             // @codeCoverageIgnoreStart
@@ -111,8 +112,8 @@ class MemcacheService implements Cache
     }
 
     /**
-     * (non-PHPdoc)
-     * @see \Skinny\Cache::has()
+     * @param string $key
+     * @return bool
      */
     public function has($key)
     {
@@ -128,8 +129,8 @@ class MemcacheService implements Cache
     }
 
     /**
-     * (non-PHPdoc)
-     * @see \Skinny\Cache::get()
+     * @param string $key
+     * @return array|bool|false|mixed|string
      */
     public function get($key)
     {
@@ -154,8 +155,8 @@ class MemcacheService implements Cache
     }
 
     /**
-     * (non-PHPdoc)
-     * @see \Skinny\Cache::remove()
+     * @param string $key
+     * @return bool
      */
     public function remove($key)
     {
@@ -167,8 +168,10 @@ class MemcacheService implements Cache
     }
 
     /**
-     * (non-PHPdoc)
-     * @see \Skinny\Cache::set()
+     * @param string $key
+     * @param mixed $value
+     * @param int $timeout
+     * @return bool|void
      */
     public function set($key, $value, $timeout = self::DEFAULT_EXPIRATION)
     {

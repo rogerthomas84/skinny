@@ -32,6 +32,9 @@
  */
 namespace Skinny;
 
+use Skinny\Validate\AbstractValidator;
+use Skinny\Validate\NotEmpty;
+
 /**
  * Form
  *
@@ -73,7 +76,6 @@ class Form
      */
     public function __construct()
     {
-
     }
 
     /**
@@ -89,12 +91,12 @@ class Form
         if ($required == true) {
             $hasNotEmpty = false;
             foreach ($validators as $validator) {
-                if ($validator instanceof \Skinny\Validate\NotEmpty) {
+                if ($validator instanceof NotEmpty) {
                     $hasNotEmpty = true;
                 }
             }
             if (!$hasNotEmpty) {
-                $validators[] = new \Skinny\Validate\NotEmpty();
+                $validators[] = new NotEmpty();
             }
         }
         $this->fields[] = $name;
@@ -119,7 +121,7 @@ class Form
 
         $valid = true;
         foreach ($this->fields as $field) {
-            /* @var $validator \Skinny\Validate\AbstractValidator */
+            /* @var $validator AbstractValidator */
             foreach ($this->validators[$field] as $validator) {
                 if (!array_key_exists($field, $postParams)) {
                     $this->addError($field, '%s must be provided.');

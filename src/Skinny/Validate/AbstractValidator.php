@@ -30,6 +30,7 @@
  * OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
+
 namespace Skinny\Validate;
 
 /**
@@ -40,8 +41,8 @@ namespace Skinny\Validate;
  * @package Skinny
  * @author  Roger Thomas <roger.thomas@rogerethomas.com>
  */
-abstract class AbstractValidator {
-
+abstract class AbstractValidator
+{
     /**
      * @var string
      */

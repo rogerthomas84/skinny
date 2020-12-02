@@ -30,9 +30,8 @@
  * OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-namespace Skinny\Validate;
 
-use Skinny\Validate\AbstractValidator;
+namespace Skinny\Validate;
 
 /**
  * NotEmpty
@@ -42,13 +41,16 @@ use Skinny\Validate\AbstractValidator;
  * @package Skinny
  * @author  Roger Thomas <roger.thomas@rogerethomas.com>
  */
-class NotEmpty extends AbstractValidator {
-
+class NotEmpty extends AbstractValidator
+{
     /**
      * @var string
      */
     public $errorMessage = '%s is required and cannot be empty.';
 
+    /**
+     * NotEmpty constructor.
+     */
     public function __construct()
     {
     }

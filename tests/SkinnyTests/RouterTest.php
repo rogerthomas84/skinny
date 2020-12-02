@@ -156,7 +156,7 @@ class RouterTest extends TestCase
             return;
         }
 
-        $this->fail('Failed asserting Exception for invalid route.');
+        $this->fail('Failed asserting BaseException for invalid route.');
     }
 
 }

@@ -30,6 +30,7 @@
  * OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
+
 namespace Skinny;
 
 /**
@@ -44,30 +45,30 @@ namespace Skinny;
  * @package Skinny
  * @author  Roger Thomas <roger.thomas@rogerethomas.com>
  */
-class Session {
-
+class Session
+{
     /**
      * Instance of this class
      *
-     * @var \Skinny\Session
+     * @var Session
      */
     protected static $_instance = null;
 
     /**
-     * @var \Skinny\Storage
+     * @var Storage
      */
     private $instance = false;
 
     /**
      * Protected __construct()
      *
-     * @throws \Exception
+     * @throws BaseException
      */
     final protected function __construct()
     {
         if (headers_sent($filename, $linenum)) {
             // @codeCoverageIgnoreStart
-            throw new \Exception('Headers already sent in ' . $filename . '::' . $linenum);
+            throw new BaseException('Headers already sent in ' . $filename . '::' . $linenum);
             // @codeCoverageIgnoreEnd
         } else {
             $this->setup();
@@ -77,7 +78,7 @@ class Session {
     /**
      * Retrieve an instance of \Skinny\Session
      *
-     * @return \Skinny\Session
+     * @return Session
      */
     public static function getInstance()
     {
@@ -92,8 +93,8 @@ class Session {
      *
      * @param string $name
      * @param mixed $value
-     * @throws \Exception
      * @return boolean result of set
+     * @throws BaseException
      */
     public function set($name, $value)
     {
@@ -108,8 +109,8 @@ class Session {
      * Remove a single value from the session
      *
      * @param string $name
-     * @throws \Exception
      * @return boolean
+     * @throws BaseException
      */
     public function remove($name)
     {
@@ -122,8 +123,8 @@ class Session {
     /**
      * Clear all session values outside of the namespace.
      *
-     * @throws \Exception
      * @return boolean
+     * @throws BaseException
      */
     public function removeAll()
     {
@@ -138,8 +139,8 @@ class Session {
      * to regenerate a new session id.
      *
      * @param boolean $regenerate
-     * @throws \Exception
      * @return boolean
+     * @throws BaseException
      */
     public function destroy($regenerate = false)
     {
@@ -155,8 +156,8 @@ class Session {
      * Retrieve a value from the session
      *
      * @param string $name
-     * @throws \Exception
-     * @return value|boolean false for failure
+     * @return mixed|false for failure
+     * @throws BaseException
      */
     public function get($name)
     {
@@ -168,6 +169,6 @@ class Session {
      */
     protected function setup()
     {
-        $this->instance = new \Skinny\Storage('__Sf_');
+        $this->instance = new Storage('__Sf_');
     }
 }

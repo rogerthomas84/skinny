@@ -83,7 +83,7 @@ class ImageSizeTest extends TestCase
         try {
             $filter = @new ImageSize('/this/doesnt/exist/anywhere.');
         } catch (\Exception $e) {
-            $this->assertInstanceOf('Skinny\Exception', $e);
+            $this->assertInstanceOf('Skinny\BaseException', $e);
             return;
         }
         $this->fail('expected exception due to null construct.');
