@@ -16,6 +16,9 @@
         "ext-gd": "*",
         "ext-mbstring": "*"
     },
+    "suggest": {
+        "ext-memcache": "*"
+    },
     "autoload": {
         "psr-0": { "Skinny": "src" }
     },
