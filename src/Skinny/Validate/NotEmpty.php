@@ -70,7 +70,7 @@ class NotEmpty extends AbstractValidator
 
             return true;
         }
-        if (mb_strlen((string)$value) == 0) {
+        if (mb_strlen(trim((string)$value)) == 0) {
 
             return false;
         }

@@ -90,7 +90,7 @@ class StringLength extends AbstractValidator
             $value = (string)$value;
         }
 
-        $length = mb_strlen($value);
+        $length = mb_strlen(trim($value));
         if ($this->maximum == null) {
             if ($length >= $this->minimum) {
                 return true;
