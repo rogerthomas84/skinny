@@ -64,6 +64,7 @@ class FormTest extends TestCase
         $this->form->addElement('test1', true);
         $result = $this->form->isValid(array('test1' => null));
         $this->assertFalse($result);
+        $this->assertEquals(null, $this->form->getProvidedData('test1'));
     }
 
     public function testRequiredValidWorks()
@@ -72,9 +73,13 @@ class FormTest extends TestCase
         $this->form->addElement('test1', true);
         $result = $this->form->isValid(array('test1' => '123'));
         $this->assertTrue($result);
+        $this->assertEquals('123', $this->form->getProvidedData('test1'));
 
         $resultFour = $this->form->isValid(array('test1' => array('yes', 'its', 'ok')));
         $this->assertTrue($resultFour);
+        $this->assertEquals(array('yes', 'its', 'ok'), $this->form->getProvidedData('test1'));
+        $this->assertCount(1, $this->form->getProvidedData());
+        $this->assertArrayHasKey('test1', $this->form->getProvidedData());
     }
 
     public function testRequiredEmptyArrayFails()
@@ -101,6 +106,7 @@ class FormTest extends TestCase
         $this->assertTrue($result);
     }
 
+    /** @noinspection PhpParamsInspection */
     public function testNonArrayParamsFails()
     {
         $this->reset();

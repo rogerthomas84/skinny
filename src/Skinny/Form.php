@@ -49,27 +49,32 @@ class Form
     /**
      * @var array
      */
-    protected $fields = array();
+    protected $fields = [];
 
     /**
      * @var array
      */
-    protected $validators = array();
+    protected $validators = [];
 
     /**
      * @var array
      */
-    protected $required = array();
+    protected $required = [];
 
     /**
      * @var array
      */
-    protected $errorMessages = array();
+    protected $errorMessages = [];
 
     /**
      * @var array
      */
-    protected $logicalNames = array();
+    protected $logicalNames = [];
+
+    /**
+     * @var array
+     */
+    protected $userProvidedData = [];
 
     /**
      * Constructor
@@ -86,7 +91,7 @@ class Form
      * @param array $validators
      * @param string $logicalName
      */
-    public function addElement($name, $required = false, $validators = array(), $logicalName = null)
+    public function addElement($name, $required = false, $validators = [], $logicalName = null)
     {
         if ($required == true) {
             $hasNotEmpty = false;
@@ -112,7 +117,7 @@ class Form
      * @param array $postParams
      * @return boolean
      */
-    public function isValid($postParams)
+    public function isValid($postParams): bool
     {
         if (!is_array($postParams)) {
             $this->errorMessages = array('Form was invalid.');
@@ -128,6 +133,7 @@ class Form
                     $valid = false;
                     continue;
                 }
+                $this->userProvidedData[$field] = $postParams[$field];
 
                 $validator->setData($postParams);
 
@@ -141,27 +147,43 @@ class Form
     }
 
     /**
+     * Get the posted data for the form. Either all of the data (by passing null) or a specific field.
+     *
+     * @param string|null $fieldName
+     * @return array|string
+     */
+    public function getProvidedData(?string $fieldName = null)
+    {
+        if (null !== $fieldName) {
+            if (array_key_exists($fieldName, $this->userProvidedData)) {
+                return $this->userProvidedData[$fieldName];
+            }
+            return null;
+        }
+        return $this->userProvidedData;
+    }
+
+    /**
      * Add a message to a given field.
      * @param string $fieldName
      * @param string $message
      */
-    protected function addError($fieldName, $message)
+    protected function addError(string $fieldName, string $message)
     {
         if ($this->logicalNames[$fieldName] == null) {
             return;
         }
         if (!array_key_exists($fieldName, $this->errorMessages)) {
-            $this->errorMessages[$fieldName] = array();
+            $this->errorMessages[$fieldName] = [];
         }
         $this->errorMessages[$fieldName][] = sprintf(
             $message,
             $this->logicalNames[$fieldName]
         );
-        return;
     }
 
     /**
-     * Get an array of error messagas back.
+     * Get an array of error messages back.
      * @return array
      */
     public function getErrors()
