@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.org/rogerthomas84/skinny.png)](http://travis-ci.org/rogerthomas84/skinny)
+![Build Status](https://github.com/rogerthomas84/skinny/actions/workflows/php.yml/badge.svg)
 
 Skinny PHP Library
 ==================
