@@ -1,18 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
-
-<phpunit bootstrap="vendor/autoload.php" colors="true">
-    <testsuites>
-        <testsuite name="All Skinny Tests">
-            <directory>tests/SkinnyTests</directory>
-        </testsuite>
-    </testsuites>
-
-    <filter>
-        <whitelist>
-            <directory>src/Skinny</directory>
-            <exclude>
-                <directory>tests/SkinnyTests</directory>
-            </exclude>
-        </whitelist>
-    </filter>
+<phpunit
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        cacheResult="false"
+        bootstrap="vendor/autoload.php"
+        colors="true"
+        xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/9.3/phpunit.xsd">
+  <coverage>
+    <include>
+      <directory>src/</directory>
+    </include>
+    <exclude>
+      <directory>tests/</directory>
+    </exclude>
+  </coverage>
+  <testsuites>
+    <testsuite name="All Skinny Tests">
+      <directory>tests/</directory>
+    </testsuite>
+  </testsuites>
 </phpunit>
